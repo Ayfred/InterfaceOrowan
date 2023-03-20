@@ -61,7 +61,6 @@ public class DatabaseConnection {
     }
 
     public void PreparedStatementWorker() {
-        // TODO Auto-generated method stub
         try {
             insertion=dbConnection.prepareStatement("INSERT INTO WORKER(id, name,password) VALUES (?, ?, ?)");
         } catch (SQLException e) {
