@@ -1,5 +1,6 @@
-package controleur;
+package com.example.interfaceorowan.controleur;
 
+/*
 import org.h2.jdbcx.*;
 
 import java.sql.*;
@@ -175,3 +176,4 @@ public class DatabaseConnection {
         //Ce qui reste à faire : methode pour afficher password et id/ delete table/Person / getPassword via id/ name unique
     }
 }
+*/
