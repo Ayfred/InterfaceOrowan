@@ -1,4 +1,4 @@
-package com.example.interfaceorowan.controleur;
+package com.example.interfaceorowan.modele;
 
 
 import org.h2.jdbcx.*;
@@ -17,6 +17,21 @@ public class DatabaseConnection {
     public static DatabaseConnection manager = null;
 
     public DatabaseConnection() {
+
+            JdbcDataSource dataSource = new JdbcDataSource();
+            dataSource.setURL(DB_URL);
+            dataSource.setUser(USER);
+            dataSource.setPassword(PASS);
+
+            try {
+                dbConnection=dataSource.getConnection();
+                System.out.println("Connection réussie.");
+            }
+            catch (SQLException e) {
+                e.printStackTrace();
+                System.out.println("Connection échouée.");
+                System.exit(0);
+            }
     }
 
     public static DatabaseConnection getInstance() {
@@ -80,6 +95,23 @@ public class DatabaseConnection {
     public void PreparedStatementgetRole() {
         try {
             insertion=dbConnection.prepareStatement("SELECT role FROM WORKER WHERE name=?");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.exit(0);
+        }
+    }
+
+    public void PreparedStatementsetPassword() {
+        try {
+            insertion=dbConnection.prepareStatement("UPDATE WORKER SET password=? WHERE name=?");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.exit(0);
+        }
+    }
+    public void PreparedStatementsetRole() {
+        try {
+            insertion=dbConnection.prepareStatement("UPDATE WORKER SET role=? WHERE name=?");
         } catch (SQLException e) {
             e.printStackTrace();
             System.exit(0);
@@ -194,7 +226,7 @@ public class DatabaseConnection {
     }
 
     public String getPassword(String name) throws SQLException {
-        String password = null;
+        String password = "";
         // test pour verifier que le name est bien dans la db
         ArrayList<String> names;
         names = (ArrayList<String>) retrievePersonsName();
@@ -213,9 +245,9 @@ public class DatabaseConnection {
         else{
             System.out.println("identifiant inconnus");
         }
-        System.out.println(password);
         return password;
     }
+
     public String getRole(String name) throws SQLException {
         String role = null;
         // test pour verifier que le name est bien dans la db
@@ -237,18 +269,49 @@ public class DatabaseConnection {
         else{
             System.out.println("identifiant inconnus");
         }
-        System.out.println(role);
         return role;
+    }
+
+    public void changeRole (String name,String role){
+        ArrayList<String> names;
+        names = (ArrayList<String>) retrievePersonsName();
+        if (names.contains(name)) {
+            manager.PreparedStatementsetRole();
+            try {
+                insertion.setString(1, role);
+                insertion.setString(2,name);
+                insertion.executeUpdate();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+    public void changePassword (String name,String password){
+        ArrayList<String> names;
+        names = (ArrayList<String>) retrievePersonsName();
+        if (names.contains(name)) {
+            manager.PreparedStatementsetPassword();
+            try {
+                insertion.setString(1, password);
+                insertion.setString(2,name);
+                insertion.executeUpdate();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
 
     public static void main(String[] a) throws Exception {
         DatabaseConnection manager = DatabaseConnection.getInstance();
-        manager.openDBConnection();
         manager.InsertPerson("toto6","testPassword6");
         manager.displayPersons();
         manager.getPassword("toto6");
         manager.getRole("toto6");
-        //Ce qui reste à faire : methode pour afficher password et id/ delete table/Person / getPassword
+        manager.changeRole("toto6","ADMIN");
+        manager.changePassword("toto6","testNewPassword");
+        manager.getPassword("toto6");
+        manager.getRole("toto6");
     }
+    // à faire : faire la méthode pour supprimer une méthode
 }
