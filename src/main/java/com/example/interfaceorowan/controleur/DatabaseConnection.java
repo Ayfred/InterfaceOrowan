@@ -1,6 +1,6 @@
 package com.example.interfaceorowan.controleur;
 
-/*
+
 import org.h2.jdbcx.*;
 
 import java.sql.*;
@@ -51,7 +51,7 @@ public class DatabaseConnection {
     public void CreateWorkerTable() throws SQLException {
         Statement stmt = dbConnection.createStatement();
         try {
-            String query = "CREATE TABLE WORKER (id INTEGER not NULL,name VARCHAR(255),password VARCHAR(255))";
+            String query = "CREATE TABLE WORKER (id INTEGER not NULL,name VARCHAR(255),password VARCHAR(255),role VARCHAR(255))";
             stmt.executeUpdate(query);
             stmt.close();
 
@@ -63,7 +63,23 @@ public class DatabaseConnection {
 
     public void PreparedStatementWorker() {
         try {
-            insertion=dbConnection.prepareStatement("INSERT INTO WORKER(id, name,password) VALUES (?, ?, ?)");
+            insertion=dbConnection.prepareStatement("INSERT INTO WORKER(id,name,password,role) VALUES (?,?,?,?)");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.exit(0);
+        }
+    }
+    public void PreparedStatementgetPassword() {
+        try {
+            insertion=dbConnection.prepareStatement("SELECT password FROM WORKER WHERE name=?");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.exit(0);
+        }
+    }
+    public void PreparedStatementgetRole() {
+        try {
+            insertion=dbConnection.prepareStatement("SELECT role FROM WORKER WHERE name=?");
         } catch (SQLException e) {
             e.printStackTrace();
             System.exit(0);
@@ -107,30 +123,36 @@ public class DatabaseConnection {
             System.out.println("La table WORKER est crée");
         }
         // Preparation du statement
-        manager.PreparedStatementWorker();
+
         // Calcul de l'identifiant du nouveau worker
         int id = manager.CountWorker() + 1;
 
-
-        // Insertion de la nouvelle personne
-        try {
-            // Fixe la valeur des paramètres de la requête avant exécution.
-            // Les indices numériques sont numérotés à partir de 1 et non 0.
-            insertion.setInt(1,id);
-            insertion.setString(2,name);
-            insertion.setString(3,password);
-            //L'exécution des requêtes de modification est déclenchée par la méthode executeUpdate
-            insertion.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        // Verification pour voir si l'identifiant est deja utilisé
+        ArrayList<String> names;
+        names = (ArrayList<String>) retrievePersonsName();
+        if (names.contains(name)){
+            System.out.println("Identifiant deja utilisé");
         }
-
-
+        else {
+            manager.PreparedStatementWorker();
+            // Insertion de la nouvelle personne
+            try {
+                // Fixe la valeur des paramètres de la requête avant exécution.
+                // Les indices numériques sont numérotés à partir de 1 et non 0.
+                insertion.setInt(1, id);
+                insertion.setString(2, name);
+                insertion.setString(3, password);
+                insertion.setString(4,"OPERATOR");
+                //L'exécution des requêtes de modification est déclenchée par la méthode executeUpdate
+                insertion.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
     public void displayPersons() {
         //Il faut tout display pour l'administrateur
         Collection<String> personNames = retrievePersonsName();
-
         for (String s : personNames) {
             System.out.println(s);
         }
@@ -140,8 +162,6 @@ public class DatabaseConnection {
 
         ArrayList<String> names = new ArrayList<>();
 
-
-
         // Utilisation d'une clause try-ressource permettant de gérer les exceptions d'ouverture
         // et de fermeture (automatique) d'une ressource (interface Closeable)
         try (Statement st = dbConnection.createStatement()) {
@@ -150,7 +170,6 @@ public class DatabaseConnection {
             // Cette méthode retourne un objet ResultSet contenant le résultat.
             // Si cette requête est récurrente, il est possible d'utiliser un PreparedStatement.
             ResultSet rs = st.executeQuery("select * from WORKER");
-
             //Itérateur. Retourne True quand il se positionne sur le tuple résultat suivant.
             while (rs.next())
             {
@@ -159,12 +178,67 @@ public class DatabaseConnection {
                 // En SQL, les indices démarrent à 1 et non 0.
                 names.add(rs.getString(2));
             }
-
         }
         catch (SQLException e) {
             e.printStackTrace();
         }
         return names;
+    }
+
+    public void deleteWorkerTable() throws SQLException {
+        Statement stmt = dbConnection.createStatement();
+
+        String sql = "DELETE FROM WORKER";
+        stmt.executeUpdate(sql);
+        System.out.println("Les données de la  table WORKER ont été supprimées avec succès");
+    }
+
+    public String getPassword(String name) throws SQLException {
+        String password = null;
+        // test pour verifier que le name est bien dans la db
+        ArrayList<String> names;
+        names = (ArrayList<String>) retrievePersonsName();
+        if (names.contains(name)){
+            manager.PreparedStatementgetPassword();
+                insertion.setString(1, name);
+                ResultSet rs = insertion.executeQuery();
+                if (rs.next())
+                {
+                    password = rs.getString("password");
+                }
+                else{
+                    System.out.println("mdp non trouvé");
+                }
+        }
+        else{
+            System.out.println("identifiant inconnus");
+        }
+        System.out.println(password);
+        return password;
+    }
+    public String getRole(String name) throws SQLException {
+        String role = null;
+        // test pour verifier que le name est bien dans la db
+        ArrayList<String> names;
+        names = (ArrayList<String>) retrievePersonsName();
+        if (names.contains(name)){
+            manager.PreparedStatementgetRole();
+            insertion.setString(1, name);
+            ResultSet rs = insertion.executeQuery();
+            if (rs.next())
+            {
+                role = rs.getString("role");
+            }
+            else{
+                System.out.println("role non trouvé");
+            }
+        }
+
+        else{
+            System.out.println("identifiant inconnus");
+        }
+        System.out.println(role);
+        return role;
     }
 
 
@@ -173,7 +247,8 @@ public class DatabaseConnection {
         manager.openDBConnection();
         manager.InsertPerson("toto6","testPassword6");
         manager.displayPersons();
-        //Ce qui reste à faire : methode pour afficher password et id/ delete table/Person / getPassword via id/ name unique
+        manager.getPassword("toto6");
+        manager.getRole("toto6");
+        //Ce qui reste à faire : methode pour afficher password et id/ delete table/Person / getPassword
     }
 }
-*/
