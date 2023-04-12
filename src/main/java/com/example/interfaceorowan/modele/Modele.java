@@ -7,10 +7,18 @@ import java.sql.SQLException;
 public class Modele {
     private DatabaseConnection database = DatabaseConnection.getInstance();
     private User user = null;
+    private static Modele modeleInstance;
 
     public PropertyChangeSupport support = new PropertyChangeSupport(this);
 
-    public Modele() {
+    private Modele() {
+    }
+
+    public static Modele getModeleinstance(){
+        if(modeleInstance == null){
+            modeleInstance = new Modele();
+        }
+        return modeleInstance;
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {
@@ -21,7 +29,7 @@ public class Modele {
      * Methode qui permet à l'utilisateur de se connecter et verifie le mdp et le username
      * le resultat est envoyé avec le firePropertyChange
      * @param name On entre son username
-     * @param password On rentre sont mdp
+     * @param password On rentre son mdp
      */
     public void login(String name,String password) throws SQLException {
         String databasePassword = database.getPassword(name);
@@ -29,6 +37,7 @@ public class Modele {
             // on envoie on controleur l'information que la connection est réussi ainsi que le role de l'utilisateur
             String role = database.getRole(name);
             //creation de l'instance singleton user
+
             user = User.getInstance(name,role);
             support.firePropertyChange("IdentifiacationReussie",null,role);
 
@@ -44,6 +53,7 @@ public class Modele {
         System.out.println(modele.user.getName());
     }
 
-
-
+    public User getUser() {
+        return user;
+    }
 }
