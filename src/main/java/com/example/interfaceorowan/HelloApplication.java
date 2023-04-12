@@ -12,6 +12,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -20,8 +21,9 @@ public class HelloApplication extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Orowan");
 
+        primaryStage.setResizable(false);
         GridPane grid = new GridPane();
-        Scene scene = new Scene(grid, 400, 400);
+        Scene scene = new Scene(grid, 1500, 1000);
 
         adjustGrid(grid);
         createInterface(grid);
@@ -36,7 +38,7 @@ public class HelloApplication extends Application {
         launch();
     }
 
-    private void createInterface(GridPane grid){
+    private void createInterface(GridPane gp){
 
         final Text actiontarget = new Text();
         Text scenetitle = new Text("Login");
@@ -46,12 +48,26 @@ public class HelloApplication extends Application {
         Button btn = new Button("Sign in");
         HBox hbBtn = new HBox(10);
         PasswordField pwBox = new PasswordField();
+        Rectangle r1 =new Rectangle();
+        StackPane sp = new StackPane();
+        GridPane grid = new GridPane();
 
-        grid.add(scenetitle, 0, 0, 2, 1);
+        r1.setWidth(310);
+        r1.setHeight(145);
+        r1.setFill(Color.WHITE);
+        r1.opacityProperty().set(0.5);
+
+        //grid.add(scenetitle, 0, 0, 2, 1);
         grid.add(userName, 0, 1);
         grid.add(userTextField, 1, 1);
         grid.add(pw, 0, 2);
         grid.add(pwBox, 1, 2);
+
+        StackPane.setMargin(grid, new Insets(20, 20, 20, 20));
+        sp.setAlignment(grid,Pos.CENTER);
+
+        sp.getChildren().addAll(r1, grid);
+        gp.add(sp,0, 0);
 
         hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
         hbBtn.getChildren().add(btn);
