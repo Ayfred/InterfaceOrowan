@@ -67,6 +67,9 @@ public class Controleur  implements PropertyChangeListener {
             case"UserSupprimé":
                 administratorVueDisplayer();
                 break;
+            case"AdminVue":
+                administratorVueDisplayer();
+                break;
         }
     }
 }
