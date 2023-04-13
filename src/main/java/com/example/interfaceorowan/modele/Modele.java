@@ -3,6 +3,7 @@ package com.example.interfaceorowan.modele;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class Modele {
     private DatabaseConnection database = DatabaseConnection.getInstance();
@@ -46,12 +47,48 @@ public class Modele {
             support.firePropertyChange("IdentificationEchoué",null,null);
         }
     }
+    /**
+     * Methode qui permet à l'utilisateur de creer un compte avec un mdp et un username
+     * le resultat est envoyé avec le firePropertyChange
+     * @param name On entre son username
+     * @param password On rentre son mdp
+     */
+    public void createAccount(String name,String password) throws SQLException{
+        if(database.InsertPerson(name,password)==true){
+            support.firePropertyChange("CompteCrée",null,null);
+        }
+        else{
+            support.firePropertyChange("IdentifiantDejaUtilisé",null,null);
+        }
+    }
+    /**
+     * Methode qui permet de changer le role d'une personne en donnant son nom et son nouveau role
+     * le resultat est envoyé avec le firePropertyChange
+     * @param name On entre son username
+     * @param role On rentre son nouveau role
+     */
+    public void changeRole(String name,String role){
+        database.changeRole(name,role);
+        support.firePropertyChange("RoleModifié",null,null);
+    }
+    /**
+     * Methode qui permet de recuperer tout les users ainsi que leur roles
+     * le resultat est envoyé avec le firePropertyChange
+     */
+    public ArrayList<String>[] getUsers(){
+        ArrayList<String>[] result = database.retrievePersonsNameandRole();
+        return result;
+    }
+
+
 
     public static void main(String[] a) throws Exception {
         Modele modele = new Modele();
         modele.login("toto6","testNewPassword");
-        System.out.println(modele.user.getName());
+        modele.createAccount("toto7","testNewPassword");
+        modele.getUsers();
     }
+
 
     public User getUser() {
         return user;

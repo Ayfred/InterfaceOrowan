@@ -1,5 +1,6 @@
 package com.example.interfaceorowan.controleur;
 
+import com.example.interfaceorowan.vue.AdministratorVue;
 import com.example.interfaceorowan.vue.BasicVue;
 import com.example.interfaceorowan.HelloApplication;
 import com.example.interfaceorowan.modele.Modele;
@@ -22,8 +23,9 @@ public class Controleur  implements PropertyChangeListener {
         this.model = Modele.getModeleinstance();
         model.addPropertyChangeListener(this);
 
-        //loginVueDisplayer();
-        basicVueDisplayer();
+        //administratorVueDisplayer();
+        loginVueDisplayer();
+        //basicVueDisplayer();
 
     }
 
@@ -34,6 +36,15 @@ public class Controleur  implements PropertyChangeListener {
 
         stage.setScene(scene);
         scene.getStylesheets().add(HelloApplication.class.getResource("design.css").toExternalForm());
+        stage.show();
+    }
+    private void administratorVueDisplayer(){
+        AdministratorVue av = new AdministratorVue();
+        av.addPropertyChangeListener(this);
+        Scene scene = av.getScene();
+
+        stage.setScene(scene);
+        scene.getStylesheets().add(HelloApplication.class.getResource("interfaceDesign.css").toExternalForm());
         stage.show();
     }
 
@@ -51,7 +62,8 @@ public class Controleur  implements PropertyChangeListener {
     public void propertyChange(PropertyChangeEvent evt) {
         switch(evt.getPropertyName()){
             case "IdentifiacationReussie":
-                basicVueDisplayer();
+                //basicVueDisplayer();
+                administratorVueDisplayer();
         }
     }
 }
