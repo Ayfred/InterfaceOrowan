@@ -82,8 +82,10 @@ public class BasicVue {
         gridpane.setHgap(20);
         gridpane.setVgap(5);
 
-        borderPane.setLeft(new ImageView(AMlogo));
-        borderPane.setRight(gridpane);
+        borderPane.setTop(new ImageView(AMlogo));
+        borderPane.setAlignment(gridpane, Pos.TOP_LEFT);
+        borderPane.setTop(gridpane);
+        borderPane.setAlignment(gridpane, Pos.TOP_RIGHT);
 
         disconnectButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
