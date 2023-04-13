@@ -40,12 +40,11 @@ public class Metronome {
         manager = DatabaseManager.getInstance();
         manager.openDBConnection();
 
+        DatabaseManager.deleteTable("INITIAL_VALUES");
         //Check for existing table in database
         if(DatabaseManager.checkTable(manager.getDbConnection(), "INITIAL_VALUES")){
 
             System.out.println("Table déjà existante");
-            //deleteTable("INITIAL_VALUES");
-            //addInitialTable();
             DatabaseManager.addInitialData();
         }
         else{
@@ -55,11 +54,12 @@ public class Metronome {
             DatabaseManager.addInitialData();
         }
 
-
+        DatabaseManager.deleteTable("OROWAN_OUTPUT");
         //Check for existing table in database
         if(DatabaseManager.checkTable(manager.getDbConnection(), "OROWAN_OUTPUT")){
 
             System.out.println("Table déjà existante");
+
             DatabaseManager.addOutputOrowanData();
         }
         else{
@@ -69,6 +69,7 @@ public class Metronome {
             DatabaseManager.addOutputOrowanData();
         }
 
+        DatabaseManager.deleteTable("MEAN_OROWAN");
         //Check for existing table in database
         if(DatabaseManager.checkTable(manager.getDbConnection(), "MEAN_OROWAN")){
 
