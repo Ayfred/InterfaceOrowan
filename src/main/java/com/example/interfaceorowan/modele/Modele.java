@@ -79,6 +79,10 @@ public class Modele {
         ArrayList<String>[] result = database.retrievePersonsNameandRole();
         return result;
     }
+    public void deleteUser(String name) throws SQLException {
+        database.deleteWorker(name);
+        support.firePropertyChange("UserSupprimé",null,null);
+    }
 
 
 

@@ -76,7 +76,7 @@ public class DatabaseConnection {
         }
     }
 
-    public void PreparedStatementWorker() {
+    public void preparedStatementWorker() {
         try {
             insertion=dbConnection.prepareStatement("INSERT INTO WORKER(id,name,password,role) VALUES (?,?,?,?)");
         } catch (SQLException e) {
@@ -84,7 +84,7 @@ public class DatabaseConnection {
             System.exit(0);
         }
     }
-    public void PreparedStatementgetPassword() {
+    public void preparedStatementgetPassword() {
         try {
             insertion=dbConnection.prepareStatement("SELECT password FROM WORKER WHERE name=?");
         } catch (SQLException e) {
@@ -92,7 +92,7 @@ public class DatabaseConnection {
             System.exit(0);
         }
     }
-    public void PreparedStatementgetRole() {
+    public void preparedStatementgetRole() {
         try {
             insertion=dbConnection.prepareStatement("SELECT role FROM WORKER WHERE name=?");
         } catch (SQLException e) {
@@ -101,7 +101,7 @@ public class DatabaseConnection {
         }
     }
 
-    public void PreparedStatementsetPassword() {
+    public void preparedStatementsetPassword() {
         try {
             insertion=dbConnection.prepareStatement("UPDATE WORKER SET password=? WHERE name=?");
         } catch (SQLException e) {
@@ -109,9 +109,17 @@ public class DatabaseConnection {
             System.exit(0);
         }
     }
-    public void PreparedStatementsetRole() {
+    public void preparedStatementsetRole() {
         try {
             insertion=dbConnection.prepareStatement("UPDATE WORKER SET role=? WHERE name=?");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.exit(0);
+        }
+    }
+    public void preparedStatementDeleteUser() {
+        try {
+            insertion=dbConnection.prepareStatement("DELETE FROM WORKER WHERE name=?");
         } catch (SQLException e) {
             e.printStackTrace();
             System.exit(0);
@@ -166,7 +174,7 @@ public class DatabaseConnection {
             return false;
         }
         else {
-            manager.PreparedStatementWorker();
+            manager.preparedStatementWorker();
             // Insertion de la nouvelle personne
             try {
                 // Fixe la valeur des paramètres de la requête avant exécution.
@@ -250,12 +258,10 @@ public class DatabaseConnection {
         return result;
     }
 
-    public void deleteWorkerTable() throws SQLException {
-        Statement stmt = dbConnection.createStatement();
-
-        String sql = "DELETE FROM WORKER";
-        stmt.executeUpdate(sql);
-        System.out.println("Les données de la  table WORKER ont été supprimées avec succès");
+    public void deleteWorker(String name) throws SQLException {
+         manager.preparedStatementDeleteUser();
+         insertion.setString(1,name);
+         insertion.execute();
     }
 
     public String getPassword(String name) throws SQLException {
@@ -264,7 +270,7 @@ public class DatabaseConnection {
         ArrayList<String> names;
         names = (ArrayList<String>) retrievePersonsName();
         if (names.contains(name)){
-            manager.PreparedStatementgetPassword();
+            manager.preparedStatementgetPassword();
                 insertion.setString(1, name);
                 ResultSet rs = insertion.executeQuery();
                 if (rs.next())
@@ -287,7 +293,7 @@ public class DatabaseConnection {
         ArrayList<String> names;
         names = (ArrayList<String>) retrievePersonsName();
         if (names.contains(name)){
-            manager.PreparedStatementgetRole();
+            manager.preparedStatementgetRole();
             insertion.setString(1, name);
             ResultSet rs = insertion.executeQuery();
             if (rs.next())
@@ -309,7 +315,7 @@ public class DatabaseConnection {
         ArrayList<String> names;
         names = (ArrayList<String>) retrievePersonsName();
         if (names.contains(name)) {
-            manager.PreparedStatementsetRole();
+            manager.preparedStatementsetRole();
             try {
                 insertion.setString(1, role);
                 insertion.setString(2,name);
@@ -323,7 +329,7 @@ public class DatabaseConnection {
         ArrayList<String> names;
         names = (ArrayList<String>) retrievePersonsName();
         if (names.contains(name)) {
-            manager.PreparedStatementsetPassword();
+            manager.preparedStatementsetPassword();
             try {
                 insertion.setString(1, password);
                 insertion.setString(2,name);
@@ -337,12 +343,15 @@ public class DatabaseConnection {
 
     public static void main(String[] a) throws Exception {
         DatabaseConnection manager = DatabaseConnection.getInstance();
-        manager.InsertPerson("toto6","testPassword6");
+        manager.InsertPerson("test1","testPassword6");
+        manager.InsertPerson("test2","2");
+        manager.InsertPerson("test3","3");
+        manager.InsertPerson("test4","4");
         manager.displayPersons();
         manager.getPassword("toto6");
         manager.getRole("toto6");
         manager.changeRole("toto6","ADMIN");
-        manager.changePassword("toto6","testNewPassword");
+        manager.changePassword("toto6","toto6");
         manager.getPassword("toto6");
         manager.getRole("toto6");
     }

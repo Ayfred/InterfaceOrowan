@@ -64,6 +64,10 @@ public class Controleur  implements PropertyChangeListener {
             case "IdentifiacationReussie":
                 //basicVueDisplayer();
                 administratorVueDisplayer();
+            case "RoleModifié":
+                administratorVueDisplayer();
+            case"UserSupprimé":
+                administratorVueDisplayer();
         }
     }
 }

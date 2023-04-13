@@ -104,19 +104,61 @@ public class AdministratorVue {
             System.out.println(result[0].get(row));
             if (!result[0].get(row).equals(m.getUser().getName())) {
                 Button buttonAdmin = new Button("ADMIN");
+                int finalRow = row;
+                buttonAdmin.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent e) {
+                        String name = result[0].get(finalRow);
+                        m.changeRole(name, "ADMIN");
+                    }
+
+
+                });
                 grid.add(buttonAdmin, result.length, row + 1);
                 Button buttonEngineer = new Button("ENGINEER");
+                buttonEngineer.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent e) {
+                        String name = result[0].get(finalRow);
+                        m.changeRole(name, "ENGINEER");
+                    }
+
+
+                });
                 grid.add(buttonEngineer, result.length + 1, row + 1);
                 Button buttonOperator = new Button("OPERATOR");
+                buttonOperator.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent e) {
+                        String name = result[0].get(finalRow);
+                        m.changeRole(name, "OPERATOR");
+                    }
+
+
+                });
                 grid.add(buttonOperator, result.length + 2, row + 1);
                 Button buttonDelete = new Button("DELETE");
+                buttonDelete.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent e) {
+                        String name = result[0].get(finalRow);
+                        try {
+                            m.deleteUser(name);
+                        } catch (SQLException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                    }
+
+
+                });
                 grid.add(buttonDelete, result.length + 3, row + 1);
-            }
+
         }
 
 
 
 
+    }
     }
 
     private void adjustGrid(GridPane grid){
