@@ -98,21 +98,7 @@ public class LoginVue {
 
             @Override
             public void handle(ActionEvent e) {
-                String identifiant = userTextField.getText();
-                String mdp = pwBox.getText();
-
-                //checkID
-                Modele m = Modele.getModeleinstance();
-                try {
-                    m.login(identifiant, mdp);
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                }
-
-                //changeScene
-
-
-
+                support.firePropertyChange("connexion",userTextField.getText(),  pwBox.getText());
                 actiontarget.setFill(Color.FIREBRICK);
                 actiontarget.setText("Identifiant ou mot de passe incorrect");
             }

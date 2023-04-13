@@ -33,7 +33,7 @@ public class Modele {
      */
     public void login(String name,String password) throws SQLException {
         String databasePassword = database.getPassword(name);
-        if(databasePassword !=null && password.equals(databasePassword)){
+        if(databasePassword != null && password.equals(databasePassword)){
             // on envoie on controleur l'information que la connection est réussi ainsi que le role de l'utilisateur
             String role = database.getRole(name);
             //creation de l'instance singleton user

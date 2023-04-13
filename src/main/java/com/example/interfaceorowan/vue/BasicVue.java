@@ -1,16 +1,19 @@
 package com.example.interfaceorowan.vue;
 
-import com.example.interfaceorowan.HelloApplication;
-import com.example.interfaceorowan.controleur.Controleur;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Paint;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.image.Image ;
-import java.awt.*;
+import javafx.scene.control.Button;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.File;
@@ -23,7 +26,7 @@ public class BasicVue {
 
     public BasicVue(Stage stage) {
         stage.setTitle("Technical View");
-        stage.setResizable(true);
+        stage.setFullScreen(true);
 
         borderPane = new BorderPane();
         adjustPane(borderPane);
@@ -33,15 +36,38 @@ public class BasicVue {
 
     public void createVue(BorderPane borderPane){
 
-        HBox userinfos = new HBox(8);
-        Label userName = new Label("");
-        Label role = new Label();
+        GridPane gridpane = new GridPane();
+        Text userName = new Text("GEGE");
+        Text role = new Text("worker");
+        Button disconnectButton = new Button("se déconnecter");
         Image AMlogo = new Image(new File("").getAbsolutePath() + "\\src\\main\\resources\\images\\amlogo2.png");
-        Image userLogo = new Image(new File("").getAbsolutePath() + "\\src\\main\\resources\\images\\userLogo.png");
+        Image userLogo = new Image(new File("").getAbsolutePath() + "\\src\\main\\resources\\images\\userLogo2.png");
+        ImageView userLogoView = new ImageView(userLogo);
 
-        userinfos.getChildren().add(new ImageView(AMlogo));
+        role.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 28));
+        userName.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 28));
+        disconnectButton.setFont(Font.font("verdana", FontWeight.LIGHT, FontPosture.REGULAR, 10));
+
+        gridpane.add(userName,0, 0);
+        gridpane.add(userLogoView, 1, 0);
+        gridpane.add(role , 0, 1);
+        gridpane.add(disconnectButton, 1, 1);
+
+        gridpane.setHalignment(userLogoView, HPos.CENTER);
+        gridpane.setHalignment(disconnectButton, HPos.CENTER);
+        gridpane.setHgap(20);
+        gridpane.setVgap(5);
+
         borderPane.setLeft(new ImageView(AMlogo));
-        borderPane.setRight(new ImageView(userLogo));
+        borderPane.setRight(gridpane);
+
+        disconnectButton.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent e) {
+                support.firePropertyChange("disconnection", null, null);
+            }
+        });
     }
 
     public Scene getScene() {
@@ -54,9 +80,6 @@ public class BasicVue {
     }
 
     private void adjustPane(BorderPane borderPane){
-        /*borderPane.setAlignment(Pos.CENTER);
-        borderPane.setHgap(10);
-        borderPane.setVgap(10);*/
         borderPane.setPadding(new Insets(25, 25, 25, 25));
     }
 }
