@@ -17,6 +17,7 @@ public class DatabaseConnection {
     PreparedStatement insertion;
     public static DatabaseConnection manager = null;
     private final List<Data> data;
+    private String columnName;
 
     public DatabaseConnection() {
             data = new ArrayList<>();
@@ -229,7 +230,7 @@ public class DatabaseConnection {
         }
         return names;
     }
-    public ArrayList<String>[] retrievePersonsNameandRole() {
+    public ArrayList[] retrievePersonsNameandRole() {
 
         ArrayList<String> names = new ArrayList<>();
         ArrayList<String> roles = new ArrayList<>();
@@ -255,7 +256,7 @@ public class DatabaseConnection {
         catch (SQLException e) {
             e.printStackTrace();
         }
-        ArrayList<String>[] result = new ArrayList[2];
+        ArrayList[] result = new ArrayList[2];
         result[0] = names;
         result[1] = roles;
         return result;
@@ -343,17 +344,32 @@ public class DatabaseConnection {
         }
     }
 
-    public void loadDataFromDatabase() {
+    public void loadDataFromDatabase(int index) {
         int i = 0;
+        data.clear();
+        //String tableName = "INITIAL_VALUES";
+        String tableName = "OROWAN_OUTPUT";
         try {
 
             // Execute a SELECT statement to retrieve the data
             Statement stmt = dbConnection.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM OROWAN_OUTPUT");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM " + tableName);
+
+            // Get the metadata for the result set
+            ResultSetMetaData metaData = rs.getMetaData();
+
+            // Get the column name for the given index
+            columnName = metaData.getColumnName(index);
 
             // Loop through the result set and add each value to the data list
             while (rs.next()) {
-                data.add(new Data(i, rs.getDouble(6)));
+                // Attention ne pas enlever les if !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                if(index != 2 && index != 21 && tableName.equals("OROWAN_OUTPUT")) {
+                    data.add(new Data(i, rs.getDouble(index)));
+
+                }else if(tableName.equals("INITIAL_VALUES")){
+                    data.add(new Data(i, Double.parseDouble(rs.getString(index).replace(",", "."))));
+                }
                 i++;
             }
 
@@ -366,6 +382,10 @@ public class DatabaseConnection {
         return data;
     }
 
+        public String getColumnName() {
+        return columnName;
+    }
+
     public static void main(String[] a) throws Exception {
         DatabaseConnection manager = DatabaseConnection.getInstance();
         manager.InsertPerson("test1","testPassword6");
@@ -375,7 +395,7 @@ public class DatabaseConnection {
         manager.displayPersons();
         manager.getPassword("toto6");
         manager.getRole("toto6");
-        manager.changeRole("toto6","ADMIN");
+        manager.changeRole("test2","ADMIN");
         manager.changePassword("toto6","toto6");
         manager.getPassword("toto6");
         manager.getRole("toto6");

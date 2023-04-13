@@ -39,8 +39,7 @@ public class BasicVue {
 
     public BasicVue(Stage stage) {
         stage.setTitle("Technical View");
-        stage.setFullScreen(true);
-        //stage.setResizable(true);
+        stage.setResizable(true);
 
         BorderPane borderPane = new BorderPane();
         adjustPane(borderPane);
@@ -53,13 +52,14 @@ public class BasicVue {
     public void createVue(BorderPane borderPane){
 
         GridPane gridpane = new GridPane();
-        Text userName = new Text("GEGE");
-        Text role = new Text("worker");
-        /*Modele modele = Modele.getModeleinstance();
+        //Text userName = new Text("GEGE");
+        //Text role = new Text("worker");
+        Modele modele = Modele.getModeleinstance();
         Text userName = new Text(modele.getUser().getName());
         Text role = new Text(modele.getUser().getRole());
-        */
+
         Button buttonAdmin = new Button("ADMIN");
+        Button buttonData = new Button("Changer les données graphiques");
         Button disconnectButton = new Button("se déconnecter");
         Image AMlogo = new Image(new File("").getAbsolutePath() + "\\src\\main\\resources\\images\\amlogo3.png");
         Image userLogo = new Image(new File("").getAbsolutePath() + "\\src\\main\\resources\\images\\userLogo2.png");
@@ -73,11 +73,12 @@ public class BasicVue {
         gridpane.add(userLogoView, 1, 0);
         gridpane.add(role , 0, 1);
         gridpane.add(disconnectButton, 1, 1);
-        gridpane.getChildren().add(buttonAdmin);
+        gridpane.add(buttonData, 1, 3);
+        gridpane.add(buttonAdmin, 1,2);
         buttonAdmin.setVisible(Modele.getModeleinstance().getUser().getRole().equals("ADMIN"));
 
-        gridpane.setHalignment(userLogoView, HPos.CENTER);
-        gridpane.setHalignment(disconnectButton, HPos.CENTER);
+        GridPane.setHalignment(userLogoView, HPos.CENTER);
+        GridPane.setHalignment(disconnectButton, HPos.CENTER);
         gridpane.setHgap(20);
         gridpane.setVgap(5);
 
@@ -97,27 +98,40 @@ public class BasicVue {
                 support.firePropertyChange("AdminVue",null,null);
             }
         });
+
+        buttonData.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                support.firePropertyChange("ChangeData",null,null);
+                drawGraph(borderPane);
+            }
+        });
+
     }
 
 
     private void drawGraph(BorderPane borderPane) {
         Modele modele = Modele.getModeleinstance();
         ArrayList<Data> data = modele.getData();
+
+
         // Create the line chart with X and Y axis
         final NumberAxis xAxis = new NumberAxis();
-        xAxis.setLabel("time");
         final NumberAxis yAxis = new NumberAxis();
-        yAxis.setLabel("Values");
         LineChart<Number, Number> lineChart = new LineChart<>(xAxis, yAxis);
-        lineChart.setTitle("Time Series Graph");
+        xAxis.setLabel("time");
+        yAxis.setLabel("Values");
+        lineChart.setTitle("Time Series Graph of " + modele.getColumnName());
 
         // Retrieve data from the model and load it into the chart
         XYChart.Series<Number, Number> series = new XYChart.Series<>();
-        System.out.println(data);
         for (Data dataPoint : data) {
             // Add the Data object to the series
             series.getData().add(new XYChart.Data<>(dataPoint.getTime(), dataPoint.getValue()));
         }
+        // Clear the previous data from the chart
+        lineChart.getData().clear();
+
         lineChart.getData().add(series);
 
 

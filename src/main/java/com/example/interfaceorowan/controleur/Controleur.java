@@ -23,10 +23,8 @@ import java.util.Objects;
 
 
 public class Controleur  implements PropertyChangeListener {
-
     private final Stage stage;
     private final Modele modele;
-
 
     public Controleur(Stage stage) {
         this.stage = stage;
@@ -94,6 +92,7 @@ public class Controleur  implements PropertyChangeListener {
         switch(evt.getPropertyName()){// /!\Ne pas changer le switch en enhanced switch car non compatible avec Java 8
             case "connexion":
                 checkId((String) evt.getOldValue(), (String) evt.getNewValue());
+                break;
             case "IdentifiacationReussie":
                 basicVueDisplayer();
                 break;
@@ -108,6 +107,18 @@ public class Controleur  implements PropertyChangeListener {
                 break;
             case "disconnection":
                 disconnectionDisplayer();
+                break;
+            case "ChangeData":
+                changeData();
+                break;
         }
+    }
+
+    private void changeData() {
+        int ind = modele.getIndex() + 1;
+        if(ind >21) ind = 1;
+        System.out.println(ind);
+        modele.setIndex(ind);
+
     }
 }

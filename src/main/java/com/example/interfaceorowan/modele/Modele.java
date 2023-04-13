@@ -10,13 +10,23 @@ public class Modele {
     private final DatabaseConnection database;
     private User user = null;
     private static Modele modeleInstance;
+    private int index = 1;
 
 
     public PropertyChangeSupport support = new PropertyChangeSupport(this);
 
     private Modele() {
         database = DatabaseConnection.getInstance();
-        database.loadDataFromDatabase();
+        this.database.loadDataFromDatabase(index);
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+        this.database.loadDataFromDatabase(index);
     }
 
     public static Modele getModeleinstance(){
@@ -38,7 +48,7 @@ public class Modele {
      */
     public void login(String name,String password) throws SQLException {
         String databasePassword = database.getPassword(name);
-        if(databasePassword != null && password.equals(databasePassword)){
+        if(password.equals(databasePassword)){
             // on envoie on controleur l'information que la connection est réussi ainsi que le role de l'utilisateur
             String role = database.getRole(name);
             //creation de l'instance singleton user
@@ -91,7 +101,9 @@ public class Modele {
         return (ArrayList<Data>) database.getData();
     }
 
-
+    public String getColumnName(){
+        return database.getColumnName();
+    }
 
     public static void main(String[] a) throws Exception {
         Modele modele = new Modele();
