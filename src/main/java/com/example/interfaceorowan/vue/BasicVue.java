@@ -6,6 +6,7 @@ import com.example.interfaceorowan.modele.Modele;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.image.ImageView;
@@ -26,8 +27,8 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class BasicVue {
-    private Scene scene;
-    private BorderPane borderPane;
+    private final Scene scene;
+    private final BorderPane borderPane;
     public PropertyChangeSupport support = new PropertyChangeSupport(this);
 
 

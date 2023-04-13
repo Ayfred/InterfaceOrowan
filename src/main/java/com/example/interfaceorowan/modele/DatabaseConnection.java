@@ -1,7 +1,6 @@
 package com.example.interfaceorowan.modele;
 
 
-import com.example.interfaceorowan.controleur.Controleur;
 import org.h2.jdbcx.*;
 
 import java.sql.*;
@@ -17,7 +16,7 @@ public class DatabaseConnection {
     static final String PASS = "";
     PreparedStatement insertion;
     public static DatabaseConnection manager = null;
-    private List<Double> data;
+    private final List<Double> data;
 
     public DatabaseConnection() {
             data = new ArrayList<>();
@@ -343,8 +342,8 @@ public class DatabaseConnection {
             }
         }
     }
+
     public ArrayList<Double> loadDataFromDatabase() {
-        ArrayList<Double> data = new ArrayList<>();
 
         try {
 
@@ -361,26 +360,7 @@ public class DatabaseConnection {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return data;
-    }
-
-    public void loadDataFromDatabase() {
-
-        try {
-
-            // Execute a SELECT statement to retrieve the data
-            Statement stmt = dbConnection.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM OROWAN_OUTPUT");
-
-            // Loop through the result set and add each value to the data list
-            while (rs.next()) {
-                System.out.printf("data  = %s%n", rs.getDouble("SIGMA_MOY"));
-                data.add(rs.getDouble(6));
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        return (ArrayList<Double>) data;
     }
 
     public List<Double> getData() {

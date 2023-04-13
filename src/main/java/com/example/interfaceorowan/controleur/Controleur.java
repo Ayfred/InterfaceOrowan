@@ -14,14 +14,15 @@ import javafx.stage.Stage;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Objects;
 
 
 public class Controleur  implements PropertyChangeListener {
 
-    private Stage stage;
+    private final Stage stage;
     private Modele model;
     private Modele modele = Modele.getModeleinstance();
-    private DatabaseConnection modele = null;
+    private DatabaseConnection dbmodele = null;
 
 
     public Controleur(Stage stage) {
@@ -52,8 +53,8 @@ public class Controleur  implements PropertyChangeListener {
     }
 
     private void basicVueDisplayer(){
-        modele = DatabaseConnection.getInstance();
-        modele.loadDataFromDatabase();
+        dbmodele = DatabaseConnection.getInstance();
+        dbmodele.loadDataFromDatabase();
         BasicVue bv = new BasicVue(stage);
         bv.addPropertyChangeListener(this);
 
@@ -61,12 +62,12 @@ public class Controleur  implements PropertyChangeListener {
         // Create the line chart
         LineChart<Number, Number> lineChart = new LineChart<>(new NumberAxis(), new NumberAxis());
         lineChart.setTitle("Data Chart");
-        System.out.println(modele.getData());
+        System.out.println(dbmodele.getData());
 
         // Retrieve data from the model and load it into the chart
         XYChart.Series<Number, Number> series = new XYChart.Series<>();
-        for (int i = 0; i < modele.getData().size(); i++) {
-            series.getData().add(new XYChart.Data<>(i + 1, modele.getData().get(i)));
+        for (int i = 0; i < dbmodele.getData().size(); i++) {
+            series.getData().add(new XYChart.Data<>(i + 1, dbmodele.getData().get(i)));
         }
         lineChart.getData().add(series);
 
@@ -76,7 +77,7 @@ public class Controleur  implements PropertyChangeListener {
         Scene scene = bv.getScene();
 
         stage.setScene(scene);
-        scene.getStylesheets().add(HelloApplication.class.getResource("interfaceDesign.css").toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(HelloApplication.class.getResource("interfaceDesign.css")).toExternalForm());
         stage.show();
     }
 
