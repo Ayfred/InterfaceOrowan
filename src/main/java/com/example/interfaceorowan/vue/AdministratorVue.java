@@ -62,7 +62,7 @@ public class AdministratorVue {
         TextField userTextField = new TextField();
         Rectangle r1 =new Rectangle();
         StackPane sp = new StackPane();
-        GridPane grid = new GridPane();
+        grid = new GridPane();
         adjustGrid(grid);
 
         r1.setWidth(310);
@@ -148,16 +148,9 @@ public class AdministratorVue {
                             throw new RuntimeException(ex);
                         }
                     }
-
-
                 });
                 grid.add(buttonDelete, result.length + 3, row + 1);
-
         }
-
-
-
-
     }
     }
 

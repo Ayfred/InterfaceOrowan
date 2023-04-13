@@ -22,10 +22,7 @@ public class Controleur  implements PropertyChangeListener {
         this.stage = stage;
         this.model = Modele.getModeleinstance();
         model.addPropertyChangeListener(this);
-
-        //administratorVueDisplayer();
         loginVueDisplayer();
-        //basicVueDisplayer();
 
     }
 
@@ -44,7 +41,7 @@ public class Controleur  implements PropertyChangeListener {
         Scene scene = av.getScene();
 
         stage.setScene(scene);
-        scene.getStylesheets().add(HelloApplication.class.getResource("interfaceDesign.css").toExternalForm());
+        scene.getStylesheets().add(HelloApplication.class.getResource("AdministratorDesign.css").toExternalForm());
         stage.show();
     }
 
@@ -62,12 +59,14 @@ public class Controleur  implements PropertyChangeListener {
     public void propertyChange(PropertyChangeEvent evt) {
         switch(evt.getPropertyName()){
             case "IdentifiacationReussie":
-                //basicVueDisplayer();
-                administratorVueDisplayer();
+                basicVueDisplayer();
+                break;
             case "RoleModifié":
                 administratorVueDisplayer();
+                break;
             case"UserSupprimé":
                 administratorVueDisplayer();
+                break;
         }
     }
 }

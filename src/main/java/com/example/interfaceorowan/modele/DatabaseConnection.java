@@ -355,5 +355,4 @@ public class DatabaseConnection {
         manager.getPassword("toto6");
         manager.getRole("toto6");
     }
-    // à faire : faire la méthode pour supprimer une méthode
 }
