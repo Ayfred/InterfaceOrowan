@@ -53,8 +53,8 @@ public class BasicVue {
     public void createVue(BorderPane borderPane){
 
         GridPane gridpane = new GridPane();
-        Text userName = new Text("GEGE");
-        Text role = new Text("worker");
+        Text userName = new Text(Modele.getModeleinstance().getUser().getName());
+        Text role = new Text(Modele.getModeleinstance().getUser().getRole());
         /*Modele modele = Modele.getModeleinstance();
         Text userName = new Text(modele.getUser().getName());
         Text role = new Text(modele.getUser().getRole());
