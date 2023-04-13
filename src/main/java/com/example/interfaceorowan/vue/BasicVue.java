@@ -19,7 +19,11 @@ import javafx.scene.control.Button;
 import java.awt.*;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import java.io.File;
+import java.util.ArrayList;
 
 public class BasicVue {
     private Scene scene;
@@ -68,6 +72,33 @@ public class BasicVue {
         userinfos.setAlignment(Pos.CENTER);
         borderPane.setLeft(new ImageView(AMlogo));
         borderPane.setRight(userinfos);
+
+        //Partie du code pour afficher le graphique
+        // Définir les axes du graphique
+        NumberAxis xAxis = new NumberAxis();
+        xAxis.setLabel("Temps");
+
+        NumberAxis yAxis = new NumberAxis();
+        yAxis.setLabel("Valeur");
+        // Créer un graphique de courbe
+        LineChart<Number, Number> lineChart = new LineChart<>(xAxis, yAxis);
+        lineChart.setTitle("Evolution des ventes");
+
+        // Ajouter des données au graphique
+        XYChart.Series<Number, Number> dataSeries = new XYChart.Series<>();
+        dataSeries.setName("Ventes");
+
+        ArrayList<Double> data  = m.getData();
+        for (int i=0; i<data.size();i++){
+            dataSeries.getData().add(new XYChart.Data<>(0.2*i, data.get(i)));
+        }
+
+
+        // Ajouter les données au graphique
+        lineChart.getData().add(dataSeries);
+
+        borderPane.setCenter(lineChart);
+
 
 
 

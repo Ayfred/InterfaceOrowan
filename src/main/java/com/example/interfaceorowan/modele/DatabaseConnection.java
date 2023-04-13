@@ -339,6 +339,26 @@ public class DatabaseConnection {
             }
         }
     }
+    public ArrayList<Double> loadDataFromDatabase() {
+        ArrayList<Double> data = new ArrayList<>();
+
+        try {
+
+            // Execute a SELECT statement to retrieve the data
+            Statement stmt = dbConnection.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM OROWAN_OUTPUT");
+
+            // Loop through the result set and add each value to the data list
+            while (rs.next()) {
+                System.out.printf("data  = %s%n", rs.getDouble("SIGMA_MOY"));
+                data.add(rs.getDouble(6));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return data;
+    }
 
 
     public static void main(String[] a) throws Exception {

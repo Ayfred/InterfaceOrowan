@@ -84,6 +84,10 @@ public class Modele {
         support.firePropertyChange("UserSupprimé",null,null);
     }
 
+    public ArrayList<Double> getData(){
+        return database.loadDataFromDatabase();
+    }
+
 
 
     public static void main(String[] a) throws Exception {
