@@ -6,18 +6,20 @@ import org.h2.jdbcx.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 
 public class DatabaseConnection {
     Connection dbConnection;
     static final String DB_URL = "jdbc:h2:~/test";
-    static final String USER = "sa";
+    static final String USER = "maxime";
     static final String PASS = "";
     PreparedStatement insertion;
     public static DatabaseConnection manager = null;
+    private final List<Double> data;
 
     public DatabaseConnection() {
-
+            data = new ArrayList<>();
             JdbcDataSource dataSource = new JdbcDataSource();
             dataSource.setURL(DB_URL);
             dataSource.setUser(USER);
@@ -48,6 +50,7 @@ public class DatabaseConnection {
         return tables.next();
     }
 
+
     private void openDBConnection() throws SQLException {
         JdbcDataSource dataSource = new JdbcDataSource();
         dataSource.setURL(DB_URL);
@@ -76,7 +79,7 @@ public class DatabaseConnection {
         }
     }
 
-    public void PreparedStatementWorker() {
+    public void preparedStatementWorker() {
         try {
             insertion=dbConnection.prepareStatement("INSERT INTO WORKER(id,name,password,role) VALUES (?,?,?,?)");
         } catch (SQLException e) {
@@ -84,7 +87,7 @@ public class DatabaseConnection {
             System.exit(0);
         }
     }
-    public void PreparedStatementgetPassword() {
+    public void preparedStatementgetPassword() {
         try {
             insertion=dbConnection.prepareStatement("SELECT password FROM WORKER WHERE name=?");
         } catch (SQLException e) {
@@ -92,7 +95,7 @@ public class DatabaseConnection {
             System.exit(0);
         }
     }
-    public void PreparedStatementgetRole() {
+    public void preparedStatementgetRole() {
         try {
             insertion=dbConnection.prepareStatement("SELECT role FROM WORKER WHERE name=?");
         } catch (SQLException e) {
@@ -101,7 +104,7 @@ public class DatabaseConnection {
         }
     }
 
-    public void PreparedStatementsetPassword() {
+    public void preparedStatementsetPassword() {
         try {
             insertion=dbConnection.prepareStatement("UPDATE WORKER SET password=? WHERE name=?");
         } catch (SQLException e) {
@@ -109,9 +112,17 @@ public class DatabaseConnection {
             System.exit(0);
         }
     }
-    public void PreparedStatementsetRole() {
+    public void preparedStatementsetRole() {
         try {
             insertion=dbConnection.prepareStatement("UPDATE WORKER SET role=? WHERE name=?");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.exit(0);
+        }
+    }
+    public void preparedStatementDeleteUser() {
+        try {
+            insertion=dbConnection.prepareStatement("DELETE FROM WORKER WHERE name=?");
         } catch (SQLException e) {
             e.printStackTrace();
             System.exit(0);
@@ -143,7 +154,7 @@ public class DatabaseConnection {
         return nbWorker;
     }
 
-    public void InsertPerson(String name,String password) throws SQLException {
+    public boolean InsertPerson(String name,String password) throws SQLException {
         // On vérifie que la table user existe
         if(tableExistsSQL(manager.dbConnection, "WORKER")){
             System.out.println("Table déjà existante");
@@ -163,10 +174,10 @@ public class DatabaseConnection {
         ArrayList<String> names;
         names = (ArrayList<String>) retrievePersonsName();
         if (names.contains(name)){
-            System.out.println("Identifiant deja utilisé");
+            return false;
         }
         else {
-            manager.PreparedStatementWorker();
+            manager.preparedStatementWorker();
             // Insertion de la nouvelle personne
             try {
                 // Fixe la valeur des paramètres de la requête avant exécution.
@@ -177,10 +188,12 @@ public class DatabaseConnection {
                 insertion.setString(4,"OPERATOR");
                 //L'exécution des requêtes de modification est déclenchée par la méthode executeUpdate
                 insertion.executeUpdate();
+
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
+        return true;
     }
     public void displayPersons() {
         //Il faut tout display pour l'administrateur
@@ -216,13 +229,42 @@ public class DatabaseConnection {
         }
         return names;
     }
+    public ArrayList<String>[] retrievePersonsNameandRole() {
 
-    public void deleteWorkerTable() throws SQLException {
-        Statement stmt = dbConnection.createStatement();
+        ArrayList<String> names = new ArrayList<>();
+        ArrayList<String> roles = new ArrayList<>();
 
-        String sql = "DELETE FROM WORKER";
-        stmt.executeUpdate(sql);
-        System.out.println("Les données de la  table WORKER ont été supprimées avec succès");
+        // Utilisation d'une clause try-ressource permettant de gérer les exceptions d'ouverture
+        // et de fermeture (automatique) d'une ressource (interface Closeable)
+        try (Statement st = dbConnection.createStatement()) {
+
+            // Les requêtes de consultation sont éxécutées avec la méthode executeQuery.
+            // Cette méthode retourne un objet ResultSet contenant le résultat.
+            // Si cette requête est récurrente, il est possible d'utiliser un PreparedStatement.
+            ResultSet rs = st.executeQuery("select * from WORKER");
+            //Itérateur. Retourne True quand il se positionne sur le tuple résultat suivant.
+            while (rs.next())
+            {
+                // De manière alternative, les méthodes get d'un ResultSet peuvent utiliser le nom de la colonne
+                // à la place de l'indice de la colonne sélectionnée dans la requête.
+                // En SQL, les indices démarrent à 1 et non 0.
+                names.add(rs.getString(2));
+                roles.add(rs.getString(4));
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        ArrayList<String>[] result = new ArrayList[2];
+        result[0] = names;
+        result[1] = roles;
+        return result;
+    }
+
+    public void deleteWorker(String name) throws SQLException {
+         manager.preparedStatementDeleteUser();
+         insertion.setString(1,name);
+         insertion.execute();
     }
 
     public String getPassword(String name) throws SQLException {
@@ -231,7 +273,7 @@ public class DatabaseConnection {
         ArrayList<String> names;
         names = (ArrayList<String>) retrievePersonsName();
         if (names.contains(name)){
-            manager.PreparedStatementgetPassword();
+            manager.preparedStatementgetPassword();
                 insertion.setString(1, name);
                 ResultSet rs = insertion.executeQuery();
                 if (rs.next())
@@ -254,7 +296,7 @@ public class DatabaseConnection {
         ArrayList<String> names;
         names = (ArrayList<String>) retrievePersonsName();
         if (names.contains(name)){
-            manager.PreparedStatementgetRole();
+            manager.preparedStatementgetRole();
             insertion.setString(1, name);
             ResultSet rs = insertion.executeQuery();
             if (rs.next())
@@ -276,7 +318,7 @@ public class DatabaseConnection {
         ArrayList<String> names;
         names = (ArrayList<String>) retrievePersonsName();
         if (names.contains(name)) {
-            manager.PreparedStatementsetRole();
+            manager.preparedStatementsetRole();
             try {
                 insertion.setString(1, role);
                 insertion.setString(2,name);
@@ -290,7 +332,7 @@ public class DatabaseConnection {
         ArrayList<String> names;
         names = (ArrayList<String>) retrievePersonsName();
         if (names.contains(name)) {
-            manager.PreparedStatementsetPassword();
+            manager.preparedStatementsetPassword();
             try {
                 insertion.setString(1, password);
                 insertion.setString(2,name);
@@ -301,17 +343,42 @@ public class DatabaseConnection {
         }
     }
 
+    public ArrayList<Double> loadDataFromDatabase() {
+
+        try {
+
+            // Execute a SELECT statement to retrieve the data
+            Statement stmt = dbConnection.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM OROWAN_OUTPUT");
+
+            // Loop through the result set and add each value to the data list
+            while (rs.next()) {
+                System.out.printf("data  = %s%n", rs.getDouble("SIGMA_MOY"));
+                data.add(rs.getDouble(6));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return (ArrayList<Double>) data;
+    }
+
+    public List<Double> getData() {
+        return data;
+    }
 
     public static void main(String[] a) throws Exception {
         DatabaseConnection manager = DatabaseConnection.getInstance();
-        manager.InsertPerson("toto6","testPassword6");
+        manager.InsertPerson("test1","testPassword6");
+        manager.InsertPerson("test2","2");
+        manager.InsertPerson("test3","3");
+        manager.InsertPerson("test4","4");
         manager.displayPersons();
         manager.getPassword("toto6");
         manager.getRole("toto6");
         manager.changeRole("toto6","ADMIN");
-        manager.changePassword("toto6","testNewPassword");
+        manager.changePassword("toto6","toto6");
         manager.getPassword("toto6");
         manager.getRole("toto6");
     }
-    // à faire : faire la méthode pour supprimer une méthode
 }
