@@ -1,5 +1,6 @@
 package com.example.interfaceorowan.vue;
 
+import com.example.interfaceorowan.modele.Data;
 import com.example.interfaceorowan.modele.Modele;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -15,7 +16,6 @@ import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.Font;
@@ -28,24 +28,24 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Button;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import java.io.File;
 import java.util.ArrayList;
 
 public class BasicVue {
-    private Scene scene;
-    private BorderPane borderPane;
+    private final Scene scene;
     public PropertyChangeSupport support = new PropertyChangeSupport(this);
-
 
     public BasicVue(Stage stage) {
         stage.setTitle("Technical View");
         stage.setFullScreen(true);
+        //stage.setResizable(true);
 
-        borderPane = new BorderPane();
+        BorderPane borderPane = new BorderPane();
         adjustPane(borderPane);
+
+        drawGraph(borderPane);
         createVue(borderPane);
         this.scene = new Scene(borderPane, stage.getMaxHeight(), stage.getMaxWidth());
     }
@@ -55,6 +55,10 @@ public class BasicVue {
         GridPane gridpane = new GridPane();
         Text userName = new Text("GEGE");
         Text role = new Text("worker");
+        /*Modele modele = Modele.getModeleinstance();
+        Text userName = new Text(modele.getUser().getName());
+        Text role = new Text(modele.getUser().getRole());
+        */
         Button buttonAdmin = new Button("ADMIN");
         Button disconnectButton = new Button("se déconnecter");
         Image AMlogo = new Image(new File("").getAbsolutePath() + "\\src\\main\\resources\\images\\amlogo3.png");
@@ -80,33 +84,6 @@ public class BasicVue {
         borderPane.setLeft(new ImageView(AMlogo));
         borderPane.setRight(gridpane);
 
-        //Partie du code pour afficher le graphique
-        // Définir les axes du graphique
-        NumberAxis xAxis = new NumberAxis();
-        xAxis.setLabel("Temps");
-
-        NumberAxis yAxis = new NumberAxis();
-        yAxis.setLabel("Valeur");
-        // Créer un graphique de courbe
-        LineChart<Number, Number> lineChart = new LineChart<>(xAxis, yAxis);
-        lineChart.setTitle("Evolution des ventes");
-
-        // Ajouter des données au graphique
-        XYChart.Series<Number, Number> dataSeries = new XYChart.Series<>();
-        dataSeries.setName("Ventes");
-
-        ArrayList<Double> data  = Modele.getModeleinstance().getData();
-        for (int i=0; i<data.size();i++){
-            dataSeries.getData().add(new XYChart.Data<>(0.2*i, data.get(i)));
-        }
-
-
-        // Ajouter les données au graphique
-        lineChart.getData().add(dataSeries);
-
-        borderPane.setCenter(lineChart);
-
-
         disconnectButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
@@ -120,6 +97,34 @@ public class BasicVue {
                 support.firePropertyChange("AdminVue",null,null);
             }
         });
+    }
+
+
+    private void drawGraph(BorderPane borderPane) {
+        Modele modele = Modele.getModeleinstance();
+        ArrayList<Data> data = modele.getData();
+        // Create the line chart with X and Y axis
+        final NumberAxis xAxis = new NumberAxis();
+        xAxis.setLabel("time");
+        final NumberAxis yAxis = new NumberAxis();
+        yAxis.setLabel("Values");
+        LineChart<Number, Number> lineChart = new LineChart<>(xAxis, yAxis);
+        lineChart.setTitle("Time Series Graph");
+
+        // Retrieve data from the model and load it into the chart
+        XYChart.Series<Number, Number> series = new XYChart.Series<>();
+        System.out.println(data);
+        for (Data dataPoint : data) {
+            // Add the Data object to the series
+            series.getData().add(new XYChart.Data<>(dataPoint.getTime(), dataPoint.getValue()));
+        }
+        lineChart.getData().add(series);
+
+
+        // Add the chart to the BasicVue
+        borderPane.setCenter(lineChart);
+        // Set the size of the chart
+        //lineChart.setPrefSize(600, 200);
     }
 
     public Scene getScene() {
@@ -138,7 +143,4 @@ public class BasicVue {
         borderPane.setPadding(new Insets(25, 25, 25, 25));
     }
 
-    public void setChart(LineChart<Number, Number> chart) {
-        borderPane.getChildren().add(chart);
-    }
 }

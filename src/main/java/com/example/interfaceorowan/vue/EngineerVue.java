@@ -4,9 +4,6 @@ import com.example.interfaceorowan.modele.Modele;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
-import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -19,10 +16,9 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.util.ArrayList;
 
-public class IngeniorVue extends BasicVue{
-    public IngeniorVue(Stage stage) {
+public class EngineerVue extends BasicVue{
+    public EngineerVue(Stage stage) {
         super(stage);
     }
 
@@ -55,33 +51,6 @@ public class IngeniorVue extends BasicVue{
 
         borderPane.setLeft(new ImageView(AMlogo));
         borderPane.setRight(gridpane);
-
-        //Partie du code pour afficher le graphique
-        // Définir les axes du graphique
-        NumberAxis xAxis = new NumberAxis();
-        xAxis.setLabel("Temps");
-
-        NumberAxis yAxis = new NumberAxis();
-        yAxis.setLabel("Valeur");
-        // Créer un graphique de courbe
-        LineChart<Number, Number> lineChart = new LineChart<>(xAxis, yAxis);
-        lineChart.setTitle("Evolution des ventes");
-
-        // Ajouter des données au graphique
-        XYChart.Series<Number, Number> dataSeries = new XYChart.Series<>();
-        dataSeries.setName("Ventes");
-
-        ArrayList<Double> data  = Modele.getModeleinstance().getData();
-        for (int i=0; i<data.size();i++){
-            dataSeries.getData().add(new XYChart.Data<>(0.2*i, data.get(i)));
-        }
-
-
-        // Ajouter les données au graphique
-        lineChart.getData().add(dataSeries);
-
-        borderPane.setCenter(lineChart);
-
 
         disconnectButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override

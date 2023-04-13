@@ -33,7 +33,7 @@ public class LoginVue {
 
     public LoginVue() {
         this.grid = new GridPane();
-        this.scene = new Scene(grid, 1500, 1000);
+        this.scene = new Scene(grid, 1000, 500);
 
         adjustGrid(grid);
         createInterface(grid);
@@ -81,7 +81,7 @@ public class LoginVue {
         grid.add(pwBox, 1, 2);
 
         StackPane.setMargin(grid, new Insets(20, 20, 20, 20));
-        sp.setAlignment(grid, Pos.CENTER);
+        StackPane.setAlignment(grid, Pos.CENTER);
 
         sp.getChildren().addAll(r1, grid);
         gp.add(sp,0, 0);

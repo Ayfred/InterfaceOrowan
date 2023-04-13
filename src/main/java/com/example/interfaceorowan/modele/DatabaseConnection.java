@@ -12,11 +12,11 @@ import java.util.List;
 public class DatabaseConnection {
     Connection dbConnection;
     static final String DB_URL = "jdbc:h2:~/test";
-    static final String USER = "sa";
+    static final String USER = "maxime";
     static final String PASS = "";
     PreparedStatement insertion;
     public static DatabaseConnection manager = null;
-    private final List<Double> data;
+    private final List<Data> data;
 
     public DatabaseConnection() {
             data = new ArrayList<>();
@@ -343,8 +343,8 @@ public class DatabaseConnection {
         }
     }
 
-    public ArrayList<Double> loadDataFromDatabase() {
-
+    public void loadDataFromDatabase() {
+        int i = 0;
         try {
 
             // Execute a SELECT statement to retrieve the data
@@ -353,17 +353,16 @@ public class DatabaseConnection {
 
             // Loop through the result set and add each value to the data list
             while (rs.next()) {
-                System.out.printf("data  = %s%n", rs.getDouble("SIGMA_MOY"));
-                data.add(rs.getDouble(6));
+                data.add(new Data(i, rs.getDouble(6)));
+                i++;
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return (ArrayList<Double>) data;
     }
 
-    public List<Double> getData() {
+    public List<Data> getData() {
         return data;
     }
 
