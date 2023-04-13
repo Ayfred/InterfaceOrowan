@@ -4,50 +4,26 @@ import com.example.interfaceorowan.modele.Modele;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
-import com.example.interfaceorowan.HelloApplication;
-import com.example.interfaceorowan.controleur.Controleur;
-import com.example.interfaceorowan.modele.Modele;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
+import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Paint;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.scene.image.Image ;
-import javafx.scene.control.Button;
-import javafx.scene.control.Button;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
-import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
+
 import java.io.File;
 import java.util.ArrayList;
 
-public class BasicVue {
-    private Scene scene;
-    private BorderPane borderPane;
-    public PropertyChangeSupport support = new PropertyChangeSupport(this);
-
-
-    public BasicVue(Stage stage) {
-        stage.setTitle("Technical View");
-        stage.setFullScreen(true);
-
-        borderPane = new BorderPane();
-        adjustPane(borderPane);
-        createVue(borderPane);
-        this.scene = new Scene(borderPane, stage.getMaxHeight(), stage.getMaxWidth());
+public class IngeniorVue extends BasicVue{
+    public IngeniorVue(Stage stage) {
+        super(stage);
     }
 
     public void createVue(BorderPane borderPane){
@@ -57,7 +33,7 @@ public class BasicVue {
         Text role = new Text("worker");
         Button buttonAdmin = new Button("ADMIN");
         Button disconnectButton = new Button("se déconnecter");
-        Image AMlogo = new Image(new File("").getAbsolutePath() + "\\src\\main\\resources\\images\\amlogo3.png");
+        Image AMlogo = new Image(new File("").getAbsolutePath() + "\\src\\main\\resources\\images\\amlogo2.png");
         Image userLogo = new Image(new File("").getAbsolutePath() + "\\src\\main\\resources\\images\\userLogo2.png");
         ImageView userLogoView = new ImageView(userLogo);
 
@@ -120,25 +96,5 @@ public class BasicVue {
                 support.firePropertyChange("AdminVue",null,null);
             }
         });
-    }
-
-    public Scene getScene() {
-        return scene;
-    }
-
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        support.addPropertyChangeListener(listener);
-
-    }
-
-    private void adjustPane(BorderPane borderPane){
-        /*borderPane.setAlignment(Pos.CENTER);
-        borderPane.setHgap(10);
-        borderPane.setVgap(10);*/
-        borderPane.setPadding(new Insets(25, 25, 25, 25));
-    }
-
-    public void setChart(LineChart<Number, Number> chart) {
-        borderPane.getChildren().add(chart);
     }
 }

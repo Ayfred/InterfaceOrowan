@@ -12,7 +12,7 @@ import java.util.List;
 public class DatabaseConnection {
     Connection dbConnection;
     static final String DB_URL = "jdbc:h2:~/test";
-    static final String USER = "maxime";
+    static final String USER = "sa";
     static final String PASS = "";
     PreparedStatement insertion;
     public static DatabaseConnection manager = null;
