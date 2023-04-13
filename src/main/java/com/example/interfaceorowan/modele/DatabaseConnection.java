@@ -1,23 +1,26 @@
 package com.example.interfaceorowan.modele;
 
 
+import com.example.interfaceorowan.controleur.Controleur;
 import org.h2.jdbcx.*;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 
 public class DatabaseConnection {
     Connection dbConnection;
     static final String DB_URL = "jdbc:h2:~/test";
-    static final String USER = "sa";
+    static final String USER = "maxime";
     static final String PASS = "";
     PreparedStatement insertion;
     public static DatabaseConnection manager = null;
+    private List<Double> data;
 
     public DatabaseConnection() {
-
+            data = new ArrayList<>();
             JdbcDataSource dataSource = new JdbcDataSource();
             dataSource.setURL(DB_URL);
             dataSource.setUser(USER);
@@ -47,6 +50,7 @@ public class DatabaseConnection {
         ResultSet tables = md.getTables(null, null, tableName, null);
         return tables.next();
     }
+
 
     private void openDBConnection() throws SQLException {
         JdbcDataSource dataSource = new JdbcDataSource();
@@ -360,6 +364,28 @@ public class DatabaseConnection {
         return data;
     }
 
+    public void loadDataFromDatabase() {
+
+        try {
+
+            // Execute a SELECT statement to retrieve the data
+            Statement stmt = dbConnection.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM OROWAN_OUTPUT");
+
+            // Loop through the result set and add each value to the data list
+            while (rs.next()) {
+                System.out.printf("data  = %s%n", rs.getDouble("SIGMA_MOY"));
+                data.add(rs.getDouble(6));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<Double> getData() {
+        return data;
+    }
 
     public static void main(String[] a) throws Exception {
         DatabaseConnection manager = DatabaseConnection.getInstance();

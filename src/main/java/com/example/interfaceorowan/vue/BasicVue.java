@@ -6,8 +6,8 @@ import com.example.interfaceorowan.modele.Modele;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.chart.LineChart;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Paint;
@@ -118,5 +118,9 @@ public class BasicVue {
         borderPane.setHgap(10);
         borderPane.setVgap(10);*/
         borderPane.setPadding(new Insets(25, 25, 25, 25));
+    }
+
+    public void setChart(LineChart<Number, Number> chart) {
+        borderPane.getChildren().add(chart);
     }
 }

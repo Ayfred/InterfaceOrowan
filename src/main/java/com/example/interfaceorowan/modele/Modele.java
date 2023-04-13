@@ -4,11 +4,13 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class Modele {
     private DatabaseConnection database = DatabaseConnection.getInstance();
     private User user = null;
     private static Modele modeleInstance;
+
 
     public PropertyChangeSupport support = new PropertyChangeSupport(this);
 
@@ -101,4 +103,5 @@ public class Modele {
     public User getUser() {
         return user;
     }
+
 }
