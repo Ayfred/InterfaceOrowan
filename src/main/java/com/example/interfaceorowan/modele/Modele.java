@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class Modele {
-    private DatabaseConnection database = DatabaseConnection.getInstance();
+    private final DatabaseConnection database;
     private User user = null;
     private static Modele modeleInstance;
 
@@ -15,6 +15,8 @@ public class Modele {
     public PropertyChangeSupport support = new PropertyChangeSupport(this);
 
     private Modele() {
+        database = DatabaseConnection.getInstance();
+        database.loadDataFromDatabase();
     }
 
     public static Modele getModeleinstance(){
@@ -56,7 +58,7 @@ public class Modele {
      * @param password On rentre son mdp
      */
     public void createAccount(String name,String password) throws SQLException{
-        if(database.InsertPerson(name,password)==true){
+        if(database.InsertPerson(name, password)){
             support.firePropertyChange("CompteCrée",null,null);
         }
         else{
@@ -78,16 +80,15 @@ public class Modele {
      * le resultat est envoyé avec le firePropertyChange
      */
     public ArrayList<String>[] getUsers(){
-        ArrayList<String>[] result = database.retrievePersonsNameandRole();
-        return result;
+        return database.retrievePersonsNameandRole();
     }
     public void deleteUser(String name) throws SQLException {
         database.deleteWorker(name);
         support.firePropertyChange("UserSupprimé",null,null);
     }
 
-    public ArrayList<Double> getData(){
-        return database.loadDataFromDatabase();
+    public ArrayList<Data> getData(){
+        return (ArrayList<Data>) database.getData();
     }
 
 

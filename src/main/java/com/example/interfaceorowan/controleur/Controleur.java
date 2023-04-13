@@ -1,5 +1,6 @@
 package com.example.interfaceorowan.controleur;
 
+import com.example.interfaceorowan.modele.Data;
 import com.example.interfaceorowan.vue.AdministratorVue;
 import com.example.interfaceorowan.modele.DatabaseConnection;
 import com.example.interfaceorowan.vue.BasicVue;
@@ -13,27 +14,26 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.stage.Stage;
+
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.sql.SQLException;
 import java.util.Objects;
 
 
 public class Controleur  implements PropertyChangeListener {
 
-    private Stage stage;
-    private Modele modele = Modele.getModeleinstance();
-    private DatabaseConnection dbmodele = null;
+    private final Stage stage;
+    private final Modele modele;
 
 
     public Controleur(Stage stage) {
         this.stage = stage;
         this.modele = Modele.getModeleinstance();
         modele.addPropertyChangeListener(this);
-
-        //loginVueDisplayer();
-        basicVueDisplayer();
-
+        loginVueDisplayer();
+        //basicVueDisplayer();
     }
 
     private void loginVueDisplayer(){
@@ -56,31 +56,12 @@ public class Controleur  implements PropertyChangeListener {
     }
 
     private void basicVueDisplayer(){
-        dbmodele = DatabaseConnection.getInstance();
-        dbmodele.loadDataFromDatabase();
         BasicVue bv = new BasicVue(stage);
         bv.addPropertyChangeListener(this);
 
-
-        // Create the line chart
-        LineChart<Number, Number> lineChart = new LineChart<>(new NumberAxis(), new NumberAxis());
-        lineChart.setTitle("Data Chart");
-        System.out.println(dbmodele.getData());
-
-        // Retrieve data from the model and load it into the chart
-        XYChart.Series<Number, Number> series = new XYChart.Series<>();
-        for (int i = 0; i < dbmodele.getData().size(); i++) {
-            series.getData().add(new XYChart.Data<>(i + 1, dbmodele.getData().get(i)));
-        }
-        lineChart.getData().add(series);
-
-        // Add the chart to the BasicVue
-        bv.setChart(lineChart);
-
         Scene scene = bv.getScene();
-
         stage.setScene(scene);
-        scene.getStylesheets().add(HelloApplication.class.getResource("interfaceDesign.css").toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(HelloApplication.class.getResource("interfaceDesign.css")).toExternalForm());
         stage.show();
     }
 
@@ -110,7 +91,7 @@ public class Controleur  implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        switch(evt.getPropertyName()){
+        switch(evt.getPropertyName()){// /!\Ne pas changer le switch en enhanced switch car non compatible avec Java 8
             case "connexion":
                 checkId((String) evt.getOldValue(), (String) evt.getNewValue());
             case "IdentifiacationReussie":
