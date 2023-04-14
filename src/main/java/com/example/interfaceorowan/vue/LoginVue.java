@@ -61,10 +61,12 @@ public class LoginVue {
         Text scenetitle = new Text("Login");
         Label userName = new Label("User Name:");
         TextField userTextField = new TextField();
+        userTextField.setText("");
         Label pw = new Label("Password:");
         Button btn = new Button("Sign in");
         HBox hbBtn = new HBox(10);
         PasswordField pwBox = new PasswordField();
+        pwBox.setText("");
         Rectangle r1 =new Rectangle();
         StackPane sp = new StackPane();
         GridPane grid = new GridPane();
