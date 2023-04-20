@@ -32,6 +32,9 @@ public class LoginVue {
     }
 
     public LoginVue() {
+        /**
+         * Create the vue for login
+         */
         this.grid = new GridPane();
         this.scene = new Scene(grid, 1000, 500);
 
@@ -56,6 +59,9 @@ public class LoginVue {
     }
 
     private void createInterface(GridPane gp){
+        /**
+         * Create buttons and label for the login vue
+         */
 
         final Text actiontarget = new Text();
         Text scenetitle = new Text("Login");
@@ -106,6 +112,9 @@ public class LoginVue {
     }
 
     private void adjustGrid(GridPane grid){
+        /**
+         * Adjust size, padding and alignement of the grid
+         */
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(10);
         grid.setVgap(10);
