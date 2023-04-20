@@ -37,10 +37,11 @@ public class BasicVue {
     private final Scene scene;
     public PropertyChangeSupport support = new PropertyChangeSupport(this);
 
+    /**
+     * A BasicVue is the view workers see after login
+     */
     public BasicVue(Stage stage) {
-        /**
-         * A BasicVue is the view workers see after login
-         */
+
         stage.setTitle("Technical View");
         stage.setFullScreen(true);
 
@@ -52,10 +53,11 @@ public class BasicVue {
         this.scene = new Scene(borderPane, stage.getMaxHeight(), stage.getMaxWidth());
     }
 
+    /**
+     * Create buttons and labels in the view
+     */
     public void createVue(BorderPane borderPane){
-        /**
-         * Create buttons and labels in the view
-         */
+
 
         GridPane gridpane = new GridPane();
         Text userName = new Text(Modele.getModeleinstance().getUser().getName());
@@ -114,11 +116,11 @@ public class BasicVue {
 
     }
 
-
+    /**
+     * Create Graphs using data contained in model
+     */
     private void drawGraph(BorderPane borderPane) {
-        /**
-         * Create Graphs using data contained in model
-         */
+
         Modele modele = Modele.getModeleinstance();
         ArrayList<Data> data = modele.getData();
         // Create the line chart with X and Y axis
@@ -159,10 +161,11 @@ public class BasicVue {
 
     }
 
+    /**
+     * Adjusts scenes size and padding
+     */
     private void adjustPane(BorderPane borderPane){
-        /**
-         * Adjusts scenes size and padding
-         */
+
         borderPane.setPadding(new Insets(25, 25, 25, 25));
     }
 

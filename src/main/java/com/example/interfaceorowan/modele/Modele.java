@@ -15,10 +15,11 @@ public class Modele {
 
     public PropertyChangeSupport support = new PropertyChangeSupport(this);
 
+    /**
+     * Singleton containing the user, to obtain easily his privilege
+     */
     private Modele() {
-        /**
-         * Singleton containing the user, to obtain easily his privilege
-         */
+
         database = DatabaseConnection.getInstance();
         this.database.loadDataFromDatabase(index);
     }
@@ -32,10 +33,11 @@ public class Modele {
         this.database.loadDataFromDatabase(index);
     }
 
+    /**
+     * to get the instance from the singleton
+     */
     public static Modele getModeleinstance(){
-        /**
-         * to get the instance from the singleton
-         */
+
         if(modeleInstance == null){
             modeleInstance = new Modele();
         }
@@ -110,10 +112,11 @@ public class Modele {
         support.firePropertyChange("UserSupprimé",null,null);
     }
 
+    /**
+     * fetch data from datatbase
+     */
     public ArrayList<Data> getData(){
-        /**
-         * fetch data from datatbase
-         */
+
         return (ArrayList<Data>) database.getData();
     }
 

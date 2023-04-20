@@ -26,21 +26,22 @@ public class Controller implements PropertyChangeListener {
     private final Stage stage;
     private final Modele modele;
 
-
+    /**
+     * Listen to event, change view, create a dynamic dipslay
+     */
     public Controller(Stage stage) {
-        /**
-         * Listen to event, change view, create a dynamic dipslay
-         */
+
         this.stage = stage;
         this.modele = Modele.getModeleinstance();
         modele.addPropertyChangeListener(this);
         loginVueDisplayer();
     }
 
+    /**
+     * Create and displays a login Vue
+     */
     private void loginVueDisplayer(){
-        /**
-         * Create and displays a login Vue
-         */
+
         LoginVue lv = new LoginVue();
         lv.addPropertyChangeListener(this);
         Scene scene = lv.getScene();
@@ -49,10 +50,12 @@ public class Controller implements PropertyChangeListener {
         scene.getStylesheets().add(HelloApplication.class.getResource("design.css").toExternalForm());
         stage.show();
     }
+
+    /**
+     * Create and displays an administrator view
+     */
     private void administratorVueDisplayer(){
-        /**
-         * Create and displays an administrator view
-         */
+
         AdministratorVue av = new AdministratorVue();
         av.addPropertyChangeListener(this);
         Scene scene = av.getScene();
@@ -62,10 +65,11 @@ public class Controller implements PropertyChangeListener {
         stage.show();
     }
 
+    /**
+     * Create and displays a basic view
+     */
     private void basicVueDisplayer(){
-        /**
-         * Create and displays a basic view
-         */
+
         BasicVue bv = new BasicVue(stage);
         bv.addPropertyChangeListener(this);
 
@@ -75,10 +79,11 @@ public class Controller implements PropertyChangeListener {
         stage.show();
     }
 
+    /**
+     * Displays confirmation window for deconnection
+     */
     private void disconnectionDisplayer(){
-        /**
-         * Displays confirmation window for deconnection
-         */
+
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Souhaitez vous vous déconnecter ?", ButtonType.YES, ButtonType.NO);
         alert.showAndWait();
 
@@ -87,10 +92,11 @@ public class Controller implements PropertyChangeListener {
         }
     }
 
+    /**
+     * Call modele login method to check id and password
+     */
     private void checkId(String name, String pw){
-        /**
-         * Call modele login method to check id and password
-         */
+
         try {
             modele.login(name, pw);
         } catch (SQLException ex) {
@@ -98,11 +104,12 @@ public class Controller implements PropertyChangeListener {
         }
     }
 
+    /**
+     * EventListener : analyse event and act considering it
+     */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        /**
-         * EventListener : analyse event and act considering it
-         */
+
         switch(evt.getPropertyName()){// /!\Ne pas changer le switch en enhanced switch car non compatible avec Java 8
             case "connexion":
                 checkId((String) evt.getOldValue(), (String) evt.getNewValue());
@@ -128,6 +135,9 @@ public class Controller implements PropertyChangeListener {
         }
     }
 
+    /**
+     * CHanges the data
+     */
     private void changeData() {
         int ind = modele.getIndex() + 1;
         if(ind >21) ind = 1;
