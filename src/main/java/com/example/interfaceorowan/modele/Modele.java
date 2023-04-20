@@ -4,7 +4,6 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Map;
 
 public class Modele {
     private final DatabaseConnection database;
@@ -93,6 +92,7 @@ public class Modele {
         database.changeRole(name,role);
         support.firePropertyChange("RoleModifié",null,null);
     }
+
     /**
      * Methode qui permet de recuperer tout les users ainsi que leur roles
      * le resultat est envoyé avec le firePropertyChange
@@ -103,8 +103,8 @@ public class Modele {
 
     /**
      * Delete a user using his name
-     * @param name
-     * @throws SQLException
+     * @param name returns the name of the user
+     * @throws SQLException if there is an error in sql queries
      */
     public void deleteUser(String name) throws SQLException {
 
