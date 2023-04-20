@@ -22,6 +22,10 @@ public class EngineerVue extends BasicVue{
         super(stage);
     }
 
+    /**
+     * Create buttons and labels
+     * @param borderPane
+     */
     public void createVue(BorderPane borderPane){
 
         GridPane gridpane = new GridPane();
