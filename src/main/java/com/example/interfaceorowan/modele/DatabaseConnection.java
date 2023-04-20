@@ -42,7 +42,8 @@ public class DatabaseConnection {
     }
 
     /**
-     * return instance from the singleton
+     * Singleton method
+     * @return  instance from the singleton
      */
     public static DatabaseConnection getInstance() {
 
@@ -82,8 +83,10 @@ public class DatabaseConnection {
         }
     }
 
+
     /**
      * Create table Worker in dataabse
+     * @throws SQLException if there is an error in sql queries
      */
     public void CreateWorkerTable() throws SQLException {
 
@@ -206,9 +209,12 @@ public class DatabaseConnection {
         return nbWorker;
     }
 
-
     /**
-     *  Insert a nw person in the database
+     * Insert a nw person in the database
+     * @param name name of the account
+     * @param password password of the account
+     * @return returns a boolean that shows the method has been correctly executed
+     * @throws SQLException if there is an error in sql queries
      */
     public boolean InsertPerson(String name,String password) throws SQLException {
 
@@ -267,7 +273,7 @@ public class DatabaseConnection {
 
     /**
      * return name from all person in database
-     * @return
+     * @return the names of people in the database
      */
     private Collection<String> retrievePersonsName() {
 
@@ -298,7 +304,7 @@ public class DatabaseConnection {
 
     /**
      * Return names and roles from all persons in database
-     * @return
+     * @return the arraylist of the people's names and roles
      */
     public ArrayList[] retrievePersonsNameandRole() {
 
@@ -334,8 +340,8 @@ public class DatabaseConnection {
 
     /**
      * Delete a worker
-     * @param name
-     * @throws SQLException
+     * @param name name of the worker to delete
+     * @throws SQLException if there is an error in sql queries
      */
     public void deleteWorker(String name) throws SQLException {
          manager.preparedStatementDeleteUser();
@@ -421,7 +427,7 @@ public class DatabaseConnection {
 
     /**
      * Collect data from database
-     * @param index
+     * @param index number of the data to show
      */
     public void loadDataFromDatabase(int index) {
         int i = 0;

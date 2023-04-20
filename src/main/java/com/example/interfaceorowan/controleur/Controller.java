@@ -28,6 +28,7 @@ public class Controller implements PropertyChangeListener {
 
     /**
      * Listen to event, change view, create a dynamic dipslay
+     * @param stage  a Stage object representing the main window of the application
      */
     public Controller(Stage stage) {
 

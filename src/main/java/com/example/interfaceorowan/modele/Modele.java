@@ -96,6 +96,7 @@ public class Modele {
     /**
      * Methode qui permet de recuperer tout les users ainsi que leur roles
      * le resultat est envoyé avec le firePropertyChange
+     * @return the list of people's names and roles
      */
     public ArrayList<String>[] getUsers(){
         return database.retrievePersonsNameandRole();
@@ -114,6 +115,7 @@ public class Modele {
 
     /**
      * fetch data from datatbase
+     * @return the list of the data
      */
     public ArrayList<Data> getData(){
 
