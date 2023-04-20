@@ -427,7 +427,7 @@ public class DatabaseConnection {
         int i = 0;
         data.clear();
         //String tableName = "INITIAL_VALUES";
-        String tableName = "OROWAN_OUTPUT";
+        String tableName = "MEAN_OROWAN";
         try {
 
             // Execute a SELECT statement to retrieve the data
@@ -448,12 +448,14 @@ public class DatabaseConnection {
 
                 }else if(tableName.equals("INITIAL_VALUES")){
                     data.add(new Data(i, Double.parseDouble(rs.getString(index).replace(",", "."))));
+                }else if(tableName.equals("MEAN_OROWAN")){
+                    data.add(new Data(i, rs.getDouble(index)));
                 }
                 i++;
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.printStackTrace();    
         }
     }
 

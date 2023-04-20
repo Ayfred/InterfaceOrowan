@@ -17,14 +17,11 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.image.Image ;
-import javafx.scene.control.Button;
 import javafx.scene.control.Button;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -32,6 +29,7 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class BasicVue {
     private final Scene scene;
@@ -43,7 +41,8 @@ public class BasicVue {
     public BasicVue(Stage stage) {
 
         stage.setTitle("Technical View");
-        stage.setFullScreen(true);
+        //stage.setFullScreen(true);
+
 
         BorderPane borderPane = new BorderPane();
         adjustPane(borderPane);
@@ -66,8 +65,9 @@ public class BasicVue {
         Button buttonAdmin = new Button("ADMIN");
         Button buttonData = new Button("Changer les données graphiques");
         Button disconnectButton = new Button("se déconnecter");
-        Image AMlogo = new Image(new File("").getAbsolutePath() + "\\src\\main\\resources\\images\\amlogo3.png");
-        Image userLogo = new Image(new File("").getAbsolutePath() + "\\src\\main\\resources\\images\\userLogo2.png");
+        Image AMlogo = new Image(Objects.requireNonNull(getClass().getClassLoader().getResource("images/amlogo3.png")).toExternalForm());
+        Image userLogo = new Image(Objects.requireNonNull(getClass().getClassLoader().getResource("images/userLogo2.png")).toExternalForm());
+
         ImageView userLogoView = new ImageView(userLogo);
 
         role.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 28));
@@ -88,9 +88,9 @@ public class BasicVue {
         gridpane.setVgap(5);
 
         borderPane.setTop(new ImageView(AMlogo));
-        borderPane.setAlignment(gridpane, Pos.TOP_LEFT);
+        BorderPane.setAlignment(gridpane, Pos.TOP_LEFT);
         borderPane.setTop(gridpane);
-        borderPane.setAlignment(gridpane, Pos.TOP_RIGHT);
+        BorderPane.setAlignment(gridpane, Pos.TOP_RIGHT);
 
         disconnectButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
