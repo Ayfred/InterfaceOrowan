@@ -168,7 +168,7 @@ public class DatabaseConnection {
     }
 
     /**
-     * Delete user
+     * Delete the user
      */
     public void preparedStatementDeleteUser() {
 
@@ -182,6 +182,7 @@ public class DatabaseConnection {
 
     /**
      * Count how much worker are stored in the database
+     * @return the number of workers
      */
     private int CountWorker(){
 
@@ -349,6 +350,12 @@ public class DatabaseConnection {
          insertion.execute();
     }
 
+    /**
+     * Retrieve the password
+     * @param name name of the user
+     * @return returns the passsword
+     * @throws SQLException if there is an error in sql queries
+     */
     public String getPassword(String name) throws SQLException {
         String password = "";
         // test pour verifier que le name est bien dans la db
@@ -372,6 +379,12 @@ public class DatabaseConnection {
         return password;
     }
 
+    /**
+     * Get the role of a user
+     * @param name name of the user
+     * @return returns the name
+     * @throws SQLException if there is an error in sql queries
+     */
     public String getRole(String name) throws SQLException {
         String role = null;
         // test pour verifier que le name est bien dans la db
@@ -396,6 +409,11 @@ public class DatabaseConnection {
         return role;
     }
 
+    /**
+     * Changes the role of a user
+     * @param name name of the user
+     * @param role role that going to be replaced with
+     */
     public void changeRole (String name,String role){
         ArrayList<String> names;
         names = (ArrayList<String>) retrievePersonsName();
@@ -465,11 +483,19 @@ public class DatabaseConnection {
         }
     }
 
+    /**
+     * get Data arraylist
+     * @return the arraylist of data from database
+     */
     public List<Data> getData() {
         return data;
     }
 
-        public String getColumnName() {
+    /**
+     * get the column names from the database
+     * @return returns a name
+     */
+    public String getColumnName() {
         return columnName;
     }
 
