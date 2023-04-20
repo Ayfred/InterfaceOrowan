@@ -98,26 +98,28 @@ public class Modele {
     public ArrayList<String>[] getUsers(){
         return database.retrievePersonsNameandRole();
     }
+
+    /**
+     * Delete a user using his name
+     * @param name
+     * @throws SQLException
+     */
     public void deleteUser(String name) throws SQLException {
+
         database.deleteWorker(name);
         support.firePropertyChange("UserSupprimé",null,null);
     }
 
     public ArrayList<Data> getData(){
+        /**
+         * fetch data from datatbase
+         */
         return (ArrayList<Data>) database.getData();
     }
 
     public String getColumnName(){
         return database.getColumnName();
     }
-
-    public static void main(String[] a) throws Exception {
-        Modele modele = new Modele();
-        modele.login("toto6","testNewPassword");
-        modele.createAccount("toto7","testNewPassword");
-        modele.getUsers();
-    }
-
 
     public User getUser() {
         return user;
