@@ -1,6 +1,6 @@
 package com.example.interfaceorowan.vue;
 
-import com.example.interfaceorowan.modele.Modele;
+import com.example.interfaceorowan.modele.Model;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
@@ -17,8 +17,8 @@ import javafx.stage.Stage;
 
 import java.io.File;
 
-public class EngineerVue extends BasicVue{
-    public EngineerVue(Stage stage) {
+public class EngineerView extends BasicView {
+    public EngineerView(Stage stage) {
         super(stage);
     }
 
@@ -46,7 +46,7 @@ public class EngineerVue extends BasicVue{
         gridpane.add(role , 0, 1);
         gridpane.add(disconnectButton, 1, 1);
         gridpane.getChildren().add(buttonAdmin);
-        buttonAdmin.setVisible(Modele.getModeleinstance().getUser().getRole().equals("ADMIN"));
+        buttonAdmin.setVisible(Model.getModeleinstance().getUser().getRole().equals("ADMIN"));
 
         gridpane.setHalignment(userLogoView, HPos.CENTER);
         gridpane.setHalignment(disconnectButton, HPos.CENTER);

@@ -1,30 +1,24 @@
 package com.example.interfaceorowan.controleur;
 
-import com.example.interfaceorowan.modele.Data;
-import com.example.interfaceorowan.vue.AdministratorVue;
-import com.example.interfaceorowan.modele.DatabaseConnection;
-import com.example.interfaceorowan.vue.BasicVue;
+import com.example.interfaceorowan.vue.AdministratorView;
+import com.example.interfaceorowan.vue.BasicView;
 import com.example.interfaceorowan.HelloApplication;
-import com.example.interfaceorowan.modele.Modele;
-import com.example.interfaceorowan.vue.LoginVue;
+import com.example.interfaceorowan.modele.Model;
+import com.example.interfaceorowan.vue.LoginView;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
 import javafx.stage.Stage;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
 import java.sql.SQLException;
 import java.util.Objects;
 
 
 public class Controller implements PropertyChangeListener {
     private final Stage stage;
-    private final Modele modele;
+    private final Model model;
 
     /**
      * Listen to event, change view, create a dynamic dipslay
@@ -33,8 +27,8 @@ public class Controller implements PropertyChangeListener {
     public Controller(Stage stage) {
 
         this.stage = stage;
-        this.modele = Modele.getModeleinstance();
-        modele.addPropertyChangeListener(this);
+        this.model = Model.getModeleinstance();
+        model.addPropertyChangeListener(this);
         loginVueDisplayer();
     }
 
@@ -43,7 +37,7 @@ public class Controller implements PropertyChangeListener {
      */
     private void loginVueDisplayer(){
 
-        LoginVue lv = new LoginVue();
+        LoginView lv = new LoginView();
         lv.addPropertyChangeListener(this);
         Scene scene = lv.getScene();
 
@@ -57,7 +51,7 @@ public class Controller implements PropertyChangeListener {
      */
     private void administratorVueDisplayer(){
 
-        AdministratorVue av = new AdministratorVue();
+        AdministratorView av = new AdministratorView();
         av.addPropertyChangeListener(this);
         Scene scene = av.getScene();
 
@@ -71,7 +65,7 @@ public class Controller implements PropertyChangeListener {
      */
     private void basicVueDisplayer(){
 
-        BasicVue bv = new BasicVue(stage);
+        BasicView bv = new BasicView(stage);
         bv.addPropertyChangeListener(this);
 
         Scene scene = bv.getScene();
@@ -81,7 +75,7 @@ public class Controller implements PropertyChangeListener {
     }
 
     /**
-     * Displays confirmation window for deconnection
+     * Displays confirmation window for disconnection
      */
     private void disconnectionDisplayer(){
 
@@ -99,7 +93,7 @@ public class Controller implements PropertyChangeListener {
     private void checkId(String name, String pw){
 
         try {
-            modele.login(name, pw);
+            model.login(name, pw);
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -140,10 +134,10 @@ public class Controller implements PropertyChangeListener {
      * CHanges the data
      */
     private void changeData() {
-        int ind = modele.getIndex() + 1;
+        int ind = model.getIndex() + 1;
         if(ind >21) ind = 1;
         System.out.println(ind);
-        modele.setIndex(ind);
+        model.setIndex(ind);
 
     }
 }

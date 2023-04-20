@@ -1,6 +1,5 @@
 package com.example.interfaceorowan.vue;
 
-import com.example.interfaceorowan.modele.Modele;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -19,10 +18,9 @@ import javafx.scene.text.Text;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.sql.SQLException;
 
 //A login view is a Scene for the login part, ie the first view to be displayed, called by HelloApplication
-public class LoginVue {
+public class LoginView {
     private GridPane grid;
     private Scene scene;
     public PropertyChangeSupport support = new PropertyChangeSupport(this);
@@ -34,7 +32,7 @@ public class LoginVue {
     /**
      * Create the vue for login
      */
-    public LoginVue() {
+    public LoginView() {
 
         this.grid = new GridPane();
         this.scene = new Scene(grid, 1000, 500);

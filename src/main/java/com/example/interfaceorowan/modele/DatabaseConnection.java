@@ -1,6 +1,5 @@
 package com.example.interfaceorowan.modele;
 
-
 import org.h2.jdbcx.*;
 
 import java.sql.*;
@@ -8,11 +7,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-
 public class DatabaseConnection {
     Connection dbConnection;
     static final String DB_URL = "jdbc:h2:~/test";
-    static final String USER = "sa";
+    static final String USER = "maxime";
     static final String PASS = "";
     private PreparedStatement insertion;
     public static DatabaseConnection manager = null;

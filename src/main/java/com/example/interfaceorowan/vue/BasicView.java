@@ -1,15 +1,10 @@
 package com.example.interfaceorowan.vue;
 
 import com.example.interfaceorowan.modele.Data;
-import com.example.interfaceorowan.modele.Modele;
+import com.example.interfaceorowan.modele.Model;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
-import com.example.interfaceorowan.HelloApplication;
-import com.example.interfaceorowan.controleur.Controller;
-import com.example.interfaceorowan.modele.Modele;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -27,18 +22,18 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import java.io.File;
+
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class BasicVue {
+public class BasicView {
     private final Scene scene;
     public PropertyChangeSupport support = new PropertyChangeSupport(this);
 
     /**
      * A BasicVue is the view workers see after login
      */
-    public BasicVue(Stage stage) {
+    public BasicView(Stage stage) {
 
         stage.setTitle("Technical View");
         //stage.setFullScreen(true);
@@ -59,8 +54,8 @@ public class BasicVue {
 
 
         GridPane gridpane = new GridPane();
-        Text userName = new Text(Modele.getModeleinstance().getUser().getName());
-        Text role = new Text(Modele.getModeleinstance().getUser().getRole());
+        Text userName = new Text(Model.getModeleinstance().getUser().getName());
+        Text role = new Text(Model.getModeleinstance().getUser().getRole());
 
         Button buttonAdmin = new Button("ADMIN");
         Button buttonData = new Button("Changer les données graphiques");
@@ -80,7 +75,7 @@ public class BasicVue {
         gridpane.add(disconnectButton, 1, 1);
         gridpane.add(buttonData, 1, 3);
         gridpane.add(buttonAdmin, 1,2);
-        buttonAdmin.setVisible(Modele.getModeleinstance().getUser().getRole().equals("ADMIN"));
+        buttonAdmin.setVisible(Model.getModeleinstance().getUser().getRole().equals("ADMIN"));
 
         gridpane.setHalignment(userLogoView, HPos.CENTER);
         gridpane.setHalignment(disconnectButton, HPos.CENTER);
@@ -121,8 +116,8 @@ public class BasicVue {
      */
     private void drawGraph(BorderPane borderPane) {
 
-        Modele modele = Modele.getModeleinstance();
-        ArrayList<Data> data = modele.getData();
+        Model model = Model.getModeleinstance();
+        ArrayList<Data> data = model.getData();
         // Create the line chart with X and Y axis
         final NumberAxis xAxis = new NumberAxis();
         xAxis.setLabel("time");
@@ -131,7 +126,7 @@ public class BasicVue {
         LineChart<Number, Number> lineChart = new LineChart<>(xAxis, yAxis);
         xAxis.setLabel("time");
         yAxis.setLabel("Values");
-        lineChart.setTitle("Time Series Graph of " + modele.getColumnName());
+        lineChart.setTitle("Time Series Graph of " + model.getColumnName());
 
         // Retrieve data from the model and load it into the chart
         XYChart.Series<Number, Number> series = new XYChart.Series<>();

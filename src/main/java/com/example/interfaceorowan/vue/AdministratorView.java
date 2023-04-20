@@ -1,6 +1,6 @@
 package com.example.interfaceorowan.vue;
 
-import com.example.interfaceorowan.modele.Modele;
+import com.example.interfaceorowan.modele.Model;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -8,10 +8,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -22,7 +20,7 @@ import java.beans.PropertyChangeSupport;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class AdministratorVue {
+public class AdministratorView {
     private GridPane grid;
     private Scene scene;
     public PropertyChangeSupport support = new PropertyChangeSupport(this);
@@ -31,7 +29,7 @@ public class AdministratorVue {
         support.addPropertyChangeListener(listener);
     }
 
-    public AdministratorVue() {
+    public AdministratorView() {
         this.grid = new GridPane();
         this.scene = new Scene(grid, 1500, 1000);
 
@@ -75,7 +73,7 @@ public class AdministratorVue {
         sp.getChildren().addAll(r1, grid);
         gp.add(sp,0, 0);
         // on recuprere tous les users les afficher dans la grid pane
-        Modele m = Modele.getModeleinstance();
+        Model m = Model.getModeleinstance();
         ArrayList<String>[] result = m.getUsers();
         Label labelname = new Label("User");
         grid.add(labelname, 0, 0);

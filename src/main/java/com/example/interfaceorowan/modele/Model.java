@@ -5,10 +5,10 @@ import java.beans.PropertyChangeSupport;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class Modele {
+public class Model {
     private final DatabaseConnection database;
     private User user = null;
-    private static Modele modeleInstance;
+    private static Model modelInstance;
     private int index = 1;
 
     public PropertyChangeSupport support = new PropertyChangeSupport(this);
@@ -16,7 +16,7 @@ public class Modele {
     /**
      * Singleton containing the user, to obtain easily his privilege
      */
-    private Modele() {
+    private Model() {
 
         database = DatabaseConnection.getInstance();
         this.database.loadDataFromDatabase(index);
@@ -34,12 +34,12 @@ public class Modele {
     /**
      * to get the instance from the singleton
      */
-    public static Modele getModeleinstance(){
+    public static Model getModeleinstance(){
 
-        if(modeleInstance == null){
-            modeleInstance = new Modele();
+        if(modelInstance == null){
+            modelInstance = new Model();
         }
-        return modeleInstance;
+        return modelInstance;
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {
