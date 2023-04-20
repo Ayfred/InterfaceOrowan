@@ -15,11 +15,17 @@ public class Modele {
     public PropertyChangeSupport support = new PropertyChangeSupport(this);
 
     private Modele() {
+        /**
+         * Singleton containing the user, to obtain easily his privilege
+         */
         database = DatabaseConnection.getInstance();
         database.loadDataFromDatabase();
     }
 
     public static Modele getModeleinstance(){
+        /**
+         * to get the instance from the singleton
+         */
         if(modeleInstance == null){
             modeleInstance = new Modele();
         }
@@ -90,16 +96,6 @@ public class Modele {
     public ArrayList<Data> getData(){
         return (ArrayList<Data>) database.getData();
     }
-
-
-
-    public static void main(String[] a) throws Exception {
-        Modele modele = new Modele();
-        modele.login("toto6","testNewPassword");
-        modele.createAccount("toto7","testNewPassword");
-        modele.getUsers();
-    }
-
 
     public User getUser() {
         return user;
