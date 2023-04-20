@@ -6,10 +6,17 @@ public class InputOrowan {
 
     private final String filePath;
 
+    /**
+     * Constructor that take the path of the output csv file
+     */
     public InputOrowan(){
         this.filePath = new File("").getAbsolutePath() + "/src/main/resources/com.example.backend/output.csv";
     }
 
+    /**
+     * Compute the file in order to give to orowan exe file
+     * @throws IOException if there is an error when reading the file
+     */
     public void csvToOrowan() throws IOException {
         // open the CSV file for reading
         BufferedReader reader = new BufferedReader(new FileReader(filePath));

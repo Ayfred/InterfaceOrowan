@@ -10,12 +10,19 @@ public class MeanCalculator {
     private final String outputFileName;
     private static MeanCalculator mc = null;
 
+    /**
+     * Loads the files
+     */
     public MeanCalculator() {
         this.csvFile = new File("").getAbsolutePath() + "/src/main/resources/com.example.backend/outputOrowan.csv";
         this.csvDelimiter = "\t";
         this.outputFileName = new File("").getAbsolutePath() + "/src/main/resources/com.example.backend/meanData.csv";
     }
 
+    /**
+     * Create a singleton of MeanCalculator class
+     * @return the instance of MeanCalculator
+     */
     public static MeanCalculator getInstance() {
         if (mc == null) {
             mc = new MeanCalculator();
@@ -23,6 +30,9 @@ public class MeanCalculator {
         return mc;
     }
 
+    /**
+     * Method that will read the file and do the mean of every 5 values
+     */
     public void computeMean() {
         File file = new File(new File("").getAbsolutePath() + "/src/main/resources/com.example.backend/meanData.csv");
         if (file.exists()) {
@@ -77,6 +87,12 @@ public class MeanCalculator {
             }
         }
     }
+
+    /**
+     * Computes the mean values of a list of data and saves them to a CSV file.
+     * @param data a List of double arrays representing the data
+     * @param outputFileName  the name of the CSV file to save the mean values
+     */
     private void computeMean(List<double[]> data, String outputFileName) {
         int nbCols = data.get(0).length;
         //System.out.printf("nb Cols : %s %n", nbCols);

@@ -12,10 +12,18 @@ import java.sql.*;
 public class DatabaseManager {
     private static Connection dbConnection;
     private static DatabaseManager manager = null;
+
+    /**
+     * DatabaseManager constructor
+     */
     public DatabaseManager(){
     }
 
-
+    /**
+     * This method uses a singleton pattern to ensure that only one instance of the class
+     * is created during the lifetime of the application.
+     * @return an instance of the DatabaseManager class
+     */
     public static DatabaseManager getInstance() {
         if (manager == null) {
             manager = new DatabaseManager();
@@ -23,6 +31,10 @@ public class DatabaseManager {
         return manager;
     }
 
+    /**
+     * Create a connection to the database
+     * @return  the database connection object
+     */
     public Connection getDbConnection() {
         return dbConnection;
     }
@@ -31,6 +43,13 @@ public class DatabaseManager {
     // L'ouverture d'une connection est une opération lente et coûteuse en resssouces.
     // Une seule connection est suffisante pour gérer les requêtes dans un contexte non-concurrent
     // (parallélisation de requêtes).
+
+    /**
+     * Etablit la connexion avec la base de données.
+     * Opening a connection is a slow and resource-intensive operation.
+     * A single connection is sufficient for managing queries in a non-concurrent context
+     * (parallelization of queries).
+     */
     public void openDBConnection()
     {
         JdbcDataSource dataSource = new JdbcDataSource();
@@ -64,7 +83,13 @@ public class DatabaseManager {
         return tables.next();
     }
 
-
+    /**
+     * Reads the data from a given file and adds it to the specified table in the database.
+     * @param file the file containing the data to be added to the database
+     * @param name the name of the table in the database where the data will be added
+     * @throws IOException if there is an error reading the file
+     * @throws SQLException if there is an error executing the SQL statement
+     */
     public void add(File file, String name) throws IOException, SQLException {
         FileReader fileReader = new FileReader(file);
         BufferedReader bufferedReader = new BufferedReader(fileReader);
@@ -83,7 +108,10 @@ public class DatabaseManager {
     }
 
 
-    //Add initial file
+    /**
+     * Create the initial table of orowan file
+     * @throws SQLException if there is an error in SQL queries
+     */
     public static void addInitialTable() throws SQLException {
         Statement stmt = dbConnection.createStatement();
         try {
@@ -123,7 +151,11 @@ public class DatabaseManager {
         }
     }
 
-    //Add MEAN Data
+    /**
+     * Insert to the initial table, data from the csv file.
+     * @throws SQLException if there is an error in SQL queries
+     * @throws IOException if there is an error reading files
+     */
     static void addInitialData() throws SQLException, IOException {
         String csvFile = new File("").getAbsolutePath() + "/src/main/resources/com.example.backend/1939351_F2.csv";
         String tableName = "INITIAL_VALUES";
@@ -151,7 +183,11 @@ public class DatabaseManager {
     }
 
 
-
+    /**
+     * From the output data of orowan, stores the data to orowan_output table
+     * @throws SQLException if there is an error in SQL queries
+     * @throws IOException if there is an error in reading files
+     */
     public static void addOutputOrowanData() throws SQLException, IOException {
 
         String csvFile = new File("").getAbsolutePath() + "/src/main/resources/com.example.backend/outputOrowan.csv";
@@ -178,6 +214,10 @@ public class DatabaseManager {
         pstmt.close();
     }
 
+    /**
+     * Create a new table to store data from orowan
+     * @throws SQLException if there is an error in SQL queries
+     */
     public static void addOutputOrowanTable() throws SQLException {
         Statement stmt = dbConnection.createStatement();
 
@@ -215,7 +255,10 @@ public class DatabaseManager {
         }
     }
 
-    //Add MEAN TABLE
+    /**
+     * Create mean table that shows the means of orowan output data
+     * @throws SQLException if there is an error in SQL queries
+     */
     public static void addMeanTable() throws SQLException {
         Statement stmt = dbConnection.createStatement();
 
@@ -251,7 +294,11 @@ public class DatabaseManager {
         }
     }
 
-    //Add MEAN Data
+    /**
+     * Add data to the mean_orowan table
+     * @throws SQLException if there is an error using sql queries
+     * @throws IOException if there is an error when reading files
+     */
     static void addMeanData() throws SQLException, IOException {
         String csvFile = new File("").getAbsolutePath() + "/src/main/resources/com.example.backend/meanData.csv";
         String tableName = "MEAN_OROWAN";
@@ -277,6 +324,11 @@ public class DatabaseManager {
         pstmt.close();
     }
 
+    /**
+     * Deletes the table according to the given name
+     * @param tableName name of the table to delete
+     * @throws SQLException if there is an error in sql queries
+     */
     public static void deleteTable(String tableName) throws SQLException {
         Statement stmt = dbConnection.createStatement();
 

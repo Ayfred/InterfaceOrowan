@@ -5,14 +5,11 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 public class Metronome {
-
     public static InputOrowan inputOrowan;
     public static ImportDataset importDataset;
     public static DatabaseManager manager = null;
     public static MeanCalculator mc = null;
 
-
-    /* implements the pattern of the program*/
     public static void main(String[] args) throws IOException, SQLException, InterruptedException {
 
         System.out.println(new File("").getAbsolutePath());
