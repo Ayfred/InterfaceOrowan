@@ -12,14 +12,18 @@ import java.util.List;
 public class DatabaseConnection {
     Connection dbConnection;
     static final String DB_URL = "jdbc:h2:~/test";
-    static final String USER = "maxime";
+    static final String USER = "sa";
     static final String PASS = "";
-    PreparedStatement insertion;
+    private PreparedStatement insertion;
     public static DatabaseConnection manager = null;
     private final List<Data> data;
     private String columnName;
 
+    /**
+     * enable connection with H2 database
+     */
     public DatabaseConnection() {
+
             data = new ArrayList<>();
             JdbcDataSource dataSource = new JdbcDataSource();
             dataSource.setURL(DB_URL);
@@ -37,22 +41,32 @@ public class DatabaseConnection {
             }
     }
 
+    /**
+     * return instance from the singleton
+     */
     public static DatabaseConnection getInstance() {
+
         if (manager == null) {
             manager = new DatabaseConnection();
         }
         return manager;
     }
 
-    //Méthode pour vérifier si une table SQL existe
+    /**
+     * Chek wether a table exists in the database
+     */
     static boolean tableExistsSQL(Connection connection, String tableName) throws SQLException {
+
         DatabaseMetaData md = connection.getMetaData();
         ResultSet tables = md.getTables(null, null, tableName, null);
         return tables.next();
     }
 
-
+    /**
+     * create connection with database
+     */
     private void openDBConnection() throws SQLException {
+
         JdbcDataSource dataSource = new JdbcDataSource();
         dataSource.setURL(DB_URL);
         dataSource.setUser(USER);
@@ -67,7 +81,12 @@ public class DatabaseConnection {
             System.exit(0);
         }
     }
+
+    /**
+     * Create table Worker in dataabse
+     */
     public void CreateWorkerTable() throws SQLException {
+
         Statement stmt = dbConnection.createStatement();
         try {
             String query = "CREATE TABLE WORKER (id INTEGER not NULL,name VARCHAR(255),password VARCHAR(255),role VARCHAR(255))";
@@ -80,7 +99,11 @@ public class DatabaseConnection {
         }
     }
 
+    /**
+     * Create an instance of Worker tablle in database
+     */
     public void preparedStatementWorker() {
+
         try {
             insertion=dbConnection.prepareStatement("INSERT INTO WORKER(id,name,password,role) VALUES (?,?,?,?)");
         } catch (SQLException e) {
@@ -88,7 +111,12 @@ public class DatabaseConnection {
             System.exit(0);
         }
     }
+
+    /**
+     * Return password from considered user
+     */
     public void preparedStatementgetPassword() {
+
         try {
             insertion=dbConnection.prepareStatement("SELECT password FROM WORKER WHERE name=?");
         } catch (SQLException e) {
@@ -96,7 +124,12 @@ public class DatabaseConnection {
             System.exit(0);
         }
     }
+
+    /**
+     * Return role from considered user
+     */
     public void preparedStatementgetRole() {
+
         try {
             insertion=dbConnection.prepareStatement("SELECT role FROM WORKER WHERE name=?");
         } catch (SQLException e) {
@@ -105,7 +138,11 @@ public class DatabaseConnection {
         }
     }
 
+    /**
+     * Set password from considered user
+     */
     public void preparedStatementsetPassword() {
+
         try {
             insertion=dbConnection.prepareStatement("UPDATE WORKER SET password=? WHERE name=?");
         } catch (SQLException e) {
@@ -113,7 +150,12 @@ public class DatabaseConnection {
             System.exit(0);
         }
     }
+
+    /**
+     * Set role from considered user
+     */
     public void preparedStatementsetRole() {
+
         try {
             insertion=dbConnection.prepareStatement("UPDATE WORKER SET role=? WHERE name=?");
         } catch (SQLException e) {
@@ -121,7 +163,12 @@ public class DatabaseConnection {
             System.exit(0);
         }
     }
+
+    /**
+     * Delete user
+     */
     public void preparedStatementDeleteUser() {
+
         try {
             insertion=dbConnection.prepareStatement("DELETE FROM WORKER WHERE name=?");
         } catch (SQLException e) {
@@ -130,7 +177,11 @@ public class DatabaseConnection {
         }
     }
 
+    /**
+     * Count how much worker are stored in the database
+     */
     private int CountWorker(){
+
         int nbWorker = 0;
         // Utilisation d'une clause try-ressource permettant de gérer les exceptions d'ouverture
         // et de fermeture (automatique) d'une ressource (interface Closeable)
@@ -155,7 +206,12 @@ public class DatabaseConnection {
         return nbWorker;
     }
 
+
+    /**
+     *  Insert a nw person in the database
+     */
     public boolean InsertPerson(String name,String password) throws SQLException {
+
         // On vérifie que la table user existe
         if(tableExistsSQL(manager.dbConnection, "WORKER")){
             System.out.println("Table déjà existante");
@@ -196,7 +252,12 @@ public class DatabaseConnection {
         }
         return true;
     }
+
+    /**
+     * Displays all persons
+     */
     public void displayPersons() {
+
         //Il faut tout display pour l'administrateur
         Collection<String> personNames = retrievePersonsName();
         for (String s : personNames) {
@@ -204,6 +265,10 @@ public class DatabaseConnection {
         }
     }
 
+    /**
+     * return name from all person in database
+     * @return
+     */
     private Collection<String> retrievePersonsName() {
 
         ArrayList<String> names = new ArrayList<>();
@@ -230,6 +295,11 @@ public class DatabaseConnection {
         }
         return names;
     }
+
+    /**
+     * Return names and roles from all persons in database
+     * @return
+     */
     public ArrayList[] retrievePersonsNameandRole() {
 
         ArrayList<String> names = new ArrayList<>();
@@ -262,6 +332,11 @@ public class DatabaseConnection {
         return result;
     }
 
+    /**
+     * Delete a worker
+     * @param name
+     * @throws SQLException
+     */
     public void deleteWorker(String name) throws SQLException {
          manager.preparedStatementDeleteUser();
          insertion.setString(1,name);
@@ -344,6 +419,10 @@ public class DatabaseConnection {
         }
     }
 
+    /**
+     * Collect data from database
+     * @param index
+     */
     public void loadDataFromDatabase(int index) {
         int i = 0;
         data.clear();

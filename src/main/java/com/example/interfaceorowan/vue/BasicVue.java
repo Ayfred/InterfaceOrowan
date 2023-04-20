@@ -6,7 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import com.example.interfaceorowan.HelloApplication;
-import com.example.interfaceorowan.controleur.Controleur;
+import com.example.interfaceorowan.controleur.Controller;
 import com.example.interfaceorowan.modele.Modele;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
