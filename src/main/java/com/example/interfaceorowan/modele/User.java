@@ -2,7 +2,7 @@ package com.example.interfaceorowan.modele;
 
 public class User {
     private static User instance;
-    private String name;
+    private final String name;
     private String role;
 
     private User(String name, String role) {

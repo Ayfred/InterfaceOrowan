@@ -11,7 +11,6 @@ public class Modele {
     private static Modele modeleInstance;
     private int index = 1;
 
-
     public PropertyChangeSupport support = new PropertyChangeSupport(this);
 
     /**
@@ -48,10 +47,10 @@ public class Modele {
     }
 
     /**
-     * Methode qui permet à l'utilisateur de se connecter et verifie le mdp et le username
-     * le resultat est envoyé avec le firePropertyChange
-     * @param name On entre son username
-     * @param password On rentre son mdp
+     * This is a method that allows the user to log in by verifying their username and password.
+     * The result is sent with the firePropertyChange.
+     * @param name: The user's username.
+     * @param password: The user's password.
      */
     public void login(String name,String password) throws SQLException {
         String databasePassword = database.getPassword(name);
@@ -68,12 +67,13 @@ public class Modele {
             support.firePropertyChange("IdentificationEchoué",null,null);
         }
     }
+
     /**
-     * Methode qui permet à l'utilisateur de creer un compte avec un mdp et un username
-     * le resultat est envoyé avec le firePropertyChange
-     * @param name On entre son username
-     * @param password On rentre son mdp
-     */
+     * Method that allows the user to create an account with a username and password.
+     * The result is sent using the firePropertyChange method.
+     * @param name The username to be used for the new account.
+     * @param password The password to be used for the new account.
+     **/
     public void createAccount(String name,String password) throws SQLException{
         if(database.InsertPerson(name, password)){
             support.firePropertyChange("CompteCrée",null,null);
@@ -82,11 +82,12 @@ public class Modele {
             support.firePropertyChange("IdentifiantDejaUtilisé",null,null);
         }
     }
+
     /**
-     * Methode qui permet de changer le role d'une personne en donnant son nom et son nouveau role
-     * le resultat est envoyé avec le firePropertyChange
-     * @param name On entre son username
-     * @param role On rentre son nouveau role
+     * Method that allows changing the role of a person by giving their name and their new role.
+     * The result is sent using the firePropertyChange method.
+     * @param name The username of the person.
+     * @param role The new role to be assigned.
      */
     public void changeRole(String name,String role){
         database.changeRole(name,role);
@@ -94,10 +95,10 @@ public class Modele {
     }
 
     /**
-     * Methode qui permet de recuperer tout les users ainsi que leur roles
-     * le resultat est envoyé avec le firePropertyChange
-     * @return the list of people's names and roles
-     */
+     * Method that retrieves all users and their roles
+     * The result is sent with the firePropertyChange method
+     * @return the array of people's names and roles
+     **/
     public ArrayList<String>[] getUsers(){
         return database.retrievePersonsNameandRole();
     }
@@ -122,10 +123,18 @@ public class Modele {
         return (ArrayList<Data>) database.getData();
     }
 
+    /**
+     * get column name
+     * @return string of the name
+     */
     public String getColumnName(){
         return database.getColumnName();
     }
 
+    /**
+     * get the user
+     * @return returns the user
+     */
     public User getUser() {
         return user;
     }
