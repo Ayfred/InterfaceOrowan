@@ -1,6 +1,6 @@
 package com.example.interfaceorowan;
 
-import com.example.interfaceorowan.controleur.Controleur;
+import com.example.interfaceorowan.controleur.Controller;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -12,7 +12,7 @@ public class HelloApplication extends Application {
          */
         primaryStage.setTitle("Login");
 
-        Controleur c = new Controleur(primaryStage);
+        Controller c = new Controller(primaryStage);
     }
 
     public static void main(String[] args) {
