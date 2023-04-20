@@ -5,6 +5,11 @@ import com.example.interfaceorowan.modele.Modele;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
+import com.example.interfaceorowan.HelloApplication;
+import com.example.interfaceorowan.controleur.Controleur;
+import com.example.interfaceorowan.modele.Modele;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -12,13 +17,15 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.image.Image ;
 import javafx.scene.control.Button;
-
+import javafx.scene.control.Button;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import javafx.scene.chart.NumberAxis;
@@ -55,6 +62,7 @@ public class BasicVue {
         Text role = new Text(Modele.getModeleinstance().getUser().getRole());
 
         Button buttonAdmin = new Button("ADMIN");
+        Button buttonData = new Button("Changer les données graphiques");
         Button disconnectButton = new Button("se déconnecter");
         Image AMlogo = new Image(new File("").getAbsolutePath() + "\\src\\main\\resources\\images\\amlogo3.png");
         Image userLogo = new Image(new File("").getAbsolutePath() + "\\src\\main\\resources\\images\\userLogo2.png");
@@ -68,7 +76,8 @@ public class BasicVue {
         gridpane.add(userLogoView, 1, 0);
         gridpane.add(role , 0, 1);
         gridpane.add(disconnectButton, 1, 1);
-        gridpane.getChildren().add(buttonAdmin);
+        gridpane.add(buttonData, 1, 3);
+        gridpane.add(buttonAdmin, 1,2);
         buttonAdmin.setVisible(Modele.getModeleinstance().getUser().getRole().equals("ADMIN"));
 
         gridpane.setHalignment(userLogoView, HPos.CENTER);
@@ -94,6 +103,15 @@ public class BasicVue {
                 support.firePropertyChange("AdminVue",null,null);
             }
         });
+
+        buttonData.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                support.firePropertyChange("ChangeData",null,null);
+                drawGraph(borderPane);
+            }
+        });
+
     }
 
 
@@ -109,7 +127,9 @@ public class BasicVue {
         final NumberAxis yAxis = new NumberAxis();
         yAxis.setLabel("Values");
         LineChart<Number, Number> lineChart = new LineChart<>(xAxis, yAxis);
-        lineChart.setTitle("Time Series Graph");
+        xAxis.setLabel("time");
+        yAxis.setLabel("Values");
+        lineChart.setTitle("Time Series Graph of " + modele.getColumnName());
 
         // Retrieve data from the model and load it into the chart
         XYChart.Series<Number, Number> series = new XYChart.Series<>();
@@ -118,6 +138,9 @@ public class BasicVue {
             // Add the Data object to the series
             series.getData().add(new XYChart.Data<>(dataPoint.getTime(), dataPoint.getValue()));
         }
+        // Clear the previous data from the chart
+        lineChart.getData().clear();
+
         lineChart.getData().add(series);
 
 
@@ -133,6 +156,7 @@ public class BasicVue {
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         support.addPropertyChangeListener(listener);
+
     }
 
     private void adjustPane(BorderPane borderPane){

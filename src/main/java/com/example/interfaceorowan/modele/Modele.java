@@ -10,6 +10,7 @@ public class Modele {
     private final DatabaseConnection database;
     private User user = null;
     private static Modele modeleInstance;
+    private int index = 1;
 
 
     public PropertyChangeSupport support = new PropertyChangeSupport(this);
@@ -19,7 +20,16 @@ public class Modele {
          * Singleton containing the user, to obtain easily his privilege
          */
         database = DatabaseConnection.getInstance();
-        database.loadDataFromDatabase();
+        this.database.loadDataFromDatabase(index);
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+        this.database.loadDataFromDatabase(index);
     }
 
     public static Modele getModeleinstance(){
@@ -96,6 +106,18 @@ public class Modele {
     public ArrayList<Data> getData(){
         return (ArrayList<Data>) database.getData();
     }
+
+    public String getColumnName(){
+        return database.getColumnName();
+    }
+
+    public static void main(String[] a) throws Exception {
+        Modele modele = new Modele();
+        modele.login("toto6","testNewPassword");
+        modele.createAccount("toto7","testNewPassword");
+        modele.getUsers();
+    }
+
 
     public User getUser() {
         return user;

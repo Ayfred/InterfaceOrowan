@@ -1,6 +1,8 @@
 package com.example.interfaceorowan.controleur;
 
+import com.example.interfaceorowan.modele.Data;
 import com.example.interfaceorowan.vue.AdministratorVue;
+import com.example.interfaceorowan.modele.DatabaseConnection;
 import com.example.interfaceorowan.vue.BasicVue;
 import com.example.interfaceorowan.HelloApplication;
 import com.example.interfaceorowan.modele.Modele;
@@ -8,16 +10,19 @@ import com.example.interfaceorowan.vue.LoginVue;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.stage.Stage;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.sql.SQLException;
 import java.util.Objects;
 
 
 public class Controller implements PropertyChangeListener {
-
     private final Stage stage;
     private final Modele modele;
 
@@ -101,6 +106,7 @@ public class Controller implements PropertyChangeListener {
         switch(evt.getPropertyName()){// /!\Ne pas changer le switch en enhanced switch car non compatible avec Java 8
             case "connexion":
                 checkId((String) evt.getOldValue(), (String) evt.getNewValue());
+                break;
             case "IdentifiacationReussie":
                 basicVueDisplayer();
                 break;
@@ -115,6 +121,18 @@ public class Controller implements PropertyChangeListener {
                 break;
             case "disconnection":
                 disconnectionDisplayer();
+                break;
+            case "ChangeData":
+                changeData();
+                break;
         }
+    }
+
+    private void changeData() {
+        int ind = modele.getIndex() + 1;
+        if(ind >21) ind = 1;
+        System.out.println(ind);
+        modele.setIndex(ind);
+
     }
 }
