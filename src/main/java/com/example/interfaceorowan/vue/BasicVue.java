@@ -38,9 +38,11 @@ public class BasicVue {
     public PropertyChangeSupport support = new PropertyChangeSupport(this);
 
     public BasicVue(Stage stage) {
+        /**
+         * A BasicVue is the view workers see after login
+         */
         stage.setTitle("Technical View");
         stage.setFullScreen(true);
-        //stage.setResizable(true);
 
         BorderPane borderPane = new BorderPane();
         adjustPane(borderPane);
@@ -51,14 +53,14 @@ public class BasicVue {
     }
 
     public void createVue(BorderPane borderPane){
+        /**
+         * Create buttons and labels in the view
+         */
 
         GridPane gridpane = new GridPane();
         Text userName = new Text(Modele.getModeleinstance().getUser().getName());
         Text role = new Text(Modele.getModeleinstance().getUser().getRole());
-        /*Modele modele = Modele.getModeleinstance();
-        Text userName = new Text(modele.getUser().getName());
-        Text role = new Text(modele.getUser().getRole());
-        */
+
         Button buttonAdmin = new Button("ADMIN");
         Button disconnectButton = new Button("se déconnecter");
         Image AMlogo = new Image(new File("").getAbsolutePath() + "\\src\\main\\resources\\images\\amlogo3.png");
@@ -103,6 +105,9 @@ public class BasicVue {
 
 
     private void drawGraph(BorderPane borderPane) {
+        /**
+         * Create Graphs using data contained in model
+         */
         Modele modele = Modele.getModeleinstance();
         ArrayList<Data> data = modele.getData();
         // Create the line chart with X and Y axis
@@ -135,13 +140,12 @@ public class BasicVue {
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         support.addPropertyChangeListener(listener);
-
     }
 
     private void adjustPane(BorderPane borderPane){
-        /*borderPane.setAlignment(Pos.CENTER);
-        borderPane.setHgap(10);
-        borderPane.setVgap(10);*/
+        /**
+         * Adjusts scenes size and padding
+         */
         borderPane.setPadding(new Insets(25, 25, 25, 25));
     }
 
