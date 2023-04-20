@@ -7,6 +7,9 @@ import javafx.stage.Stage;
 public class HelloApplication extends Application {
     @Override
     public void start(Stage primaryStage) {
+        /**
+         * Create a login vue and a controllers to rule the app
+         */
         primaryStage.setTitle("Login");
 
         Controleur c = new Controleur(primaryStage);
