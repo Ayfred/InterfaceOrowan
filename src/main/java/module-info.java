@@ -1,3 +1,4 @@
+/*
 module com.example.interfaceorowan {
     requires javafx.controls;
     requires javafx.fxml;
@@ -5,6 +6,7 @@ module com.example.interfaceorowan {
     requires java.sql;
     requires com.h2database;
     requires java.naming;
+    requires rt;
 
 
     opens com.example.interfaceorowan to javafx.fxml;
@@ -12,3 +14,4 @@ module com.example.interfaceorowan {
     exports com.example.interfaceorowan.vue;
     opens com.example.interfaceorowan.vue to javafx.fxml;
 }
+*/

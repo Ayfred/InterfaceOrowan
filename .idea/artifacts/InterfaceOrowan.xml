@@ -1,0 +1,21 @@
+<component name="ArtifactManager">
+  <artifact type="javafx" name="InterfaceOrowan">
+    <output-path>$PROJECT_DIR$/out/artifacts/InterfaceOrowan</output-path>
+    <properties id="javafx-properties">
+      <options>
+        <option name="appClass" value="com.example.interfaceorowan.HelloApplication" />
+        <option name="description" value="" />
+        <option name="htmlPlaceholderId" value="" />
+        <option name="title" value="" />
+        <option name="vendor" value="" />
+        <option name="version" value="" />
+      </options>
+    </properties>
+    <root id="root">
+      <element id="archive" name="InterfaceOrowan.jar">
+        <element id="module-output" name="InterfaceOrowan" />
+      </element>
+      <element id="file-copy" path="$PROJECT_DIR$/../../../Program Files (x86)/H2/bin/h2-2.1.214.jar" />
+    </root>
+  </artifact>
+</component>
